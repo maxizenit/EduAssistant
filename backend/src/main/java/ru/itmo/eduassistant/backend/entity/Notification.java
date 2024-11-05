@@ -19,6 +19,8 @@ public class Notification {
     @JoinColumn(name = "template_id")
     private Template template;
 
+    private String body;
+
     private LocalDateTime datetime;
 
     @ManyToOne

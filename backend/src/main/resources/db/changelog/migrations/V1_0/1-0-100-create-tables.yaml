@@ -101,6 +101,9 @@ databaseChangeLog:
                   name: template_id
                   type: BIGINT
               - column:
+                  name: body
+                  type: VARCHAR(255)
+              - column:
                   name: datetime
                   type: DATETIME
               - column:

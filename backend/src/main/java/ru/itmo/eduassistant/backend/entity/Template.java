@@ -13,5 +13,6 @@ public class Template {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //TODO add template params?
     private String body;
 }
