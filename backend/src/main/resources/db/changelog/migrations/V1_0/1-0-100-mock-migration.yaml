@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-0-100
+      author: Liquibase
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_mocktable
+                  name: id
+                  type: uuid
+            tableName: mock_table
