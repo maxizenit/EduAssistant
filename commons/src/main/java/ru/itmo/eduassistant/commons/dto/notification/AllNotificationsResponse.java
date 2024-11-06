@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.commons.dto.notofication;
+package ru.itmo.eduassistant.commons.dto.notification;
 
 import java.time.LocalDateTime;
 

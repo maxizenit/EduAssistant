@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
-import ru.itmo.eduassistant.commons.dto.notofication.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
 import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
@@ -19,14 +20,19 @@ import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
 @RequiredArgsConstructor
 public class SubjectController {
 
-    @GetMapping()
-    public AllSubjectsResponse getAllSubjects(@RequestParam long studentId) {
+    @GetMapping
+    public AllSubjectsResponse getAllStudentsSubjects(@RequestParam long studentId) {
+        return null;
+    }
+
+    @GetMapping("/teacher/{teacherId}")
+    public AllSubjectsResponse getAllTeachersSubjects(@PathVariable long teacherId) {
         return null;
     }
 
     @GetMapping("/{id}")
     public SubjectResponse getSubject(@PathVariable long id) {
-        return new SubjectResponse(1l, "name", "teacherName");
+        return null;
     }
 
     @PostMapping("/{id}/notifications")
@@ -40,8 +46,8 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}/questions")
-    void getAllQuestions(@PathVariable long id) {
-
+    public AllQuestionsResponse getAllQuestions(@PathVariable long id) {
+        return null;
     }
 
     @PostMapping("/{id}/questions/{questionId}")
