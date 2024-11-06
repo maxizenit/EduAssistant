@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.backend.model.NotificationStatus;
-import ru.itmo.eduassistant.commons.dto.notofication.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
 import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
@@ -41,8 +41,8 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}/questions")
-    void getAllQuestions(@PathVariable long id) {
-
+    public AllQuestionsResponse getAllQuestions(@PathVariable long id) {
+        return null;
     }
 
     @PostMapping("/{id}/questions/{questionId}")
