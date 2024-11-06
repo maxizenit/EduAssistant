@@ -1,12 +1,9 @@
-package ru.itmo.eduassistant.backend.entity.notification;
+package ru.itmo.eduassistant.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.itmo.eduassistant.backend.entity.subject.Subject;
-import ru.itmo.eduassistant.backend.entity.template.Template;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
