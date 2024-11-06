@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
+import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/queue")
@@ -17,8 +20,8 @@ import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 public class QueueController {
 
     @PostMapping("/")
-    void create() {
-
+    public long create(@RequestParam long SubjectId, @RequestParam LocalDateTime expirationDate) {
+        return 1L;
     }
 
     @DeleteMapping("/{id}")
@@ -27,8 +30,8 @@ public class QueueController {
     }
 
     @GetMapping("/{id}")
-    void get(@PathVariable long id) {
-
+    public QueueResponse get(@PathVariable long id) {
+        return null;
     }
 
     @GetMapping("/student/{studentId}")

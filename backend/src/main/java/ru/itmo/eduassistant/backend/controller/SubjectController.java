@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.backend.entity;
+package ru.itmo.eduassistant.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
