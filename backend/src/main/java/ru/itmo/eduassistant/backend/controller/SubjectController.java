@@ -20,14 +20,14 @@ import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
 @RequiredArgsConstructor
 public class SubjectController {
 
-    @GetMapping()
+    @GetMapping
     public AllSubjectsResponse getAllSubjects(@RequestParam long studentId) {
         return null;
     }
 
     @GetMapping("/{id}")
     public SubjectResponse getSubject(@PathVariable long id) {
-        return new SubjectResponse(1l, "name", "teacherName");
+        return null;
     }
 
     @PostMapping("/{id}/notifications")
