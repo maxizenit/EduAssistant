@@ -1,0 +1,207 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-0-100
+      author: Liquibase
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_dialogs
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: is_closed
+                  type: BOOLEAN
+              - column:
+                  name: author_id
+                  type: BIGINT
+              - column:
+                  name: first_message
+                  type: BIGINT
+              - column:
+                  name: recipient_id
+                  type: BIGINT
+              - column:
+                  name: subject_id
+                  type: BIGINT
+            tableName: dialogs
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_groups
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: groups
+
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: group_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: subject_id
+                  type: BIGINT
+            tableName: groups_to_subjects
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_messages
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: body
+                  type: VARCHAR(255)
+              - column:
+                  name: datetime
+                  type: DATETIME
+              - column:
+                  name: author_id
+                  type: BIGINT
+              - column:
+                  name: recipient_id
+                  type: BIGINT
+              - column:
+                  name: dialog_id
+                  type: BIGINT
+            tableName: messages
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_notifications
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: template_id
+                  type: BIGINT
+              - column:
+                  name: body
+                  type: VARCHAR(255)
+              - column:
+                  name: datetime
+                  type: DATETIME
+              - column:
+                  name: subject_id
+                  type: BIGINT
+              - column:
+                  name: is_archived
+                  type: BOOLEAN
+            tableName: notifications
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_queues
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: expiration_date
+                  type: DATETIME
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: subject_id
+                  type: BIGINT
+            tableName: queues
+
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: queue_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: queues_to_users
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_subjects
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: teacher_id
+                  type: BIGINT
+            tableName: subjects
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_templates
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: body
+                  type: VARCHAR(255)
+            tableName: templates
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+              - column:
+                  name: fio
+                  type: VARCHAR(255)
+              - column:
+                  name: group_id
+                  type: BIGINT
+            tableName: users
