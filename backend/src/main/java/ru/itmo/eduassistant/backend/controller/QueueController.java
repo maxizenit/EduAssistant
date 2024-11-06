@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class QueueController {
 
     @PostMapping("/")
-    public long create(@RequestParam long SubjectId, @RequestParam LocalDateTime expirationDate) {
+    public long create(@RequestParam long subjectId, @RequestParam LocalDateTime expirationDate) {
         return 1L;
     }
 
