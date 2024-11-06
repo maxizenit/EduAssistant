@@ -1,11 +1,9 @@
 package ru.itmo.eduassistant.commons.dto.notification;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public record AllNotificationsResponse(
-        long id,
-        String text,
-        LocalDateTime timestamp,
-        String subject
+        String subject,
+        List<NotificationResponse> notifications
 ) {
 }

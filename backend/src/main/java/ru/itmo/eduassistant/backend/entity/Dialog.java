@@ -3,6 +3,7 @@ package ru.itmo.eduassistant.backend.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "dialogs")
+@Accessors(chain = true)
 public class Dialog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,7 @@ public class Dialog {
 
 
     @Column(name = "first_message")
-    private Long firstMessageId;
+    private String firstMessage;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id")

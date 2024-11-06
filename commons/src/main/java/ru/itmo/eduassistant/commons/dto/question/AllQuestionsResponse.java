@@ -1,6 +1,8 @@
 package ru.itmo.eduassistant.commons.dto.question;
 
-public record AllQuestionsResponse(
+import java.util.List;
 
+public record AllQuestionsResponse(
+        List<String> questions
 ) {
 }

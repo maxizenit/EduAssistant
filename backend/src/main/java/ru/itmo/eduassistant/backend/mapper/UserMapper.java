@@ -7,6 +7,5 @@ import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-
     UserResponse toResponse(User user);
 }

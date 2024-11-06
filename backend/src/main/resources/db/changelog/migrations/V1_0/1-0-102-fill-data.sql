@@ -19,14 +19,14 @@ VALUES (1, 1),
 -- Студенты
 INSERT
 INTO users(username, role, fio, group_id, telegram_id)
-VALUES ('username1', 'STUDENT', 'fio1', 3, 13242),
-       ('username2', 'STUDENT', 'fio2', 4, 543434);
+VALUES ('username1', 'STUDENT', 'fio1', 1, 13242),
+       ('username2', 'STUDENT', 'fio2', 2, 543434);
 
 -- Диалоги
 INSERT
 INTO dialogs(is_closed, author_id, first_message, recipient_id, subject_id)
-VALUES (false, 3, 1, null, 1),
-       (true, 4, 2, null, 2);
+VALUES (false, 3, 'Прив, че дел?', null, 1),
+       (true, 4, 'Отвянь!', null, 2);
 
 -- Сообщения
 INSERT
