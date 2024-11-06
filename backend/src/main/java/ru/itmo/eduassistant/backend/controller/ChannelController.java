@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.eduassistant.backend.mapper.ChannelMapper;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.impl.DialogServiceImpl;
+import ru.itmo.eduassistant.backend.service.impl.NotificationService;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.question.NewMessageRequest;
@@ -24,6 +26,7 @@ public class ChannelController {
     private final ChannelMapper channelMapper;
     private final ChannelService service;
     private final DialogServiceImpl dialogService;
+    private final NotificationService notificationService;
 
     @GetMapping
     public AllChannelsResponse getAllStudentsChannel(@RequestParam long studentId) {
@@ -55,6 +58,12 @@ public class ChannelController {
                                                         @RequestParam NotificationStatus status) {
         return service.getAllNotifications(id, status);
     }
+
+    @PostMapping("/notifications")
+    public void createNotification(@RequestBody CreateNotificationRequest createNotificationRequest) {
+        notificationService.createNotification(createNotificationRequest);
+    }
+
 
     @PostMapping("/{id}/questions")
     void createQuestion(@PathVariable long id, @RequestBody QuestionRequest request) {
