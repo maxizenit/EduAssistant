@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.backend.mapper.UserMapper;
-import ru.itmo.eduassistant.backend.repository.UserRepository;
+import ru.itmo.eduassistant.backend.service.UserService;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
-import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 
 @RestController
@@ -17,12 +16,10 @@ import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 public class UserController {
 
     private final UserMapper userMapper;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/{telegramId}")
     public UserResponse getUser(@PathVariable long telegramId) {
-        return userRepository.findByTelegramId(telegramId)
-                .map(userMapper::toResponse)
-                .orElseThrow(() -> new EntityNotFoundException("User with id %s not found".formatted(telegramId)));
+        return userMapper.toResponse(userService.getUserByTelegramId(telegramId));
     }
 }

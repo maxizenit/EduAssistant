@@ -1,6 +1,7 @@
 package ru.itmo.eduassistant.backend.service;
 
 import ru.itmo.eduassistant.backend.entity.Channel;
+import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 
@@ -14,4 +15,10 @@ public interface ChannelService {
     Channel getChannel(long id);
 
     AllNotificationsResponse getAllNotifications(long id, NotificationStatus status);
+
+    void createChannel(CreateChannelRequest createChannelRequest);
+
+    void addUserToChannel(long channelId, long telegramUserId);
+
+    void deleteUserFromChannel(long channelId, long telegramUserId);
 }

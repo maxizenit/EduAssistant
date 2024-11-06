@@ -8,5 +8,6 @@ import ru.itmo.eduassistant.backend.entity.Channel;
 import java.util.List;
 
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
-    List<Channel> findChannelsByTeacherId(Long teacherId);
+    @Query("SELECT c FROM Channel c WHERE c.teacher.telegramId = :telegramUserId")
+    List<Channel> findChannelsByUserTelegramId(@Param("telegramUserId") Long telegramUserId);
 }

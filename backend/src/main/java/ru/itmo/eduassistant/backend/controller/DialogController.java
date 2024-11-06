@@ -11,6 +11,7 @@ import ru.itmo.eduassistant.commons.dto.dialog.*;
 @RequestMapping("/dialog")
 @RequiredArgsConstructor
 public class DialogController {
+
     private final MessageMapper messageMapper;
     private final DialogServiceImpl dialogService;
     private final DialogMapper dialogMapper;
