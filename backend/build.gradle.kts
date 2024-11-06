@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
+    id("io.freefair.lombok") version "8.10.2"
 }
 
 group = "ru.itmo.eduassistant"
@@ -31,14 +32,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
-
     implementation(project(":commons"))
-
-    implementation("org.projectlombok:lombok:1.18.30")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 tasks.withType<Test> {
