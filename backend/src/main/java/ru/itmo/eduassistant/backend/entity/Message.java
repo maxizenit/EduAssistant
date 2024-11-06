@@ -1,10 +1,8 @@
-package ru.itmo.eduassistant.backend.entity.message;
+package ru.itmo.eduassistant.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.itmo.eduassistant.backend.entity.dialog.Dialog;
-import ru.itmo.eduassistant.backend.entity.user.User;
 
 import java.time.LocalDateTime;
 
@@ -22,11 +20,11 @@ public class Message {
     private LocalDateTime datetime;
 
     @ManyToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "recipient")
+    @JoinColumn(name = "recipient_id")
     private User recipient;
 
     @ManyToOne

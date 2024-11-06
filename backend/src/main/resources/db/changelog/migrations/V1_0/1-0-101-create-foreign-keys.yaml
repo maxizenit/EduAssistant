@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-0-101
+      author: Liquibase
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: dialogs
+            constraintName: FK_DIALOGS_ON_AUTHOR
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
+            baseColumnNames: recipient_id
+            baseTableName: dialogs
+            constraintName: FK_DIALOGS_ON_RECIPIENT
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
+            baseColumnNames: subject_id
+            baseTableName: dialogs
+            constraintName: FK_DIALOGS_ON_SUBJECT
+            referencedColumnNames: id
+            referencedTableName: subjects
+
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: messages
+            constraintName: FK_MESSAGES_ON_AUTHOR
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
+            baseColumnNames: dialog_id
+            baseTableName: messages
+            constraintName: FK_MESSAGES_ON_DIALOG
+            referencedColumnNames: id
+            referencedTableName: dialogs
+
+        - addForeignKeyConstraint:
+            baseColumnNames: recipient_id
+            baseTableName: messages
+            constraintName: FK_MESSAGES_ON_RECIPIENT
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
+            baseColumnNames: subject_id
+            baseTableName: notifications
+            constraintName: FK_NOTIFICATIONS_ON_SUBJECT
+            referencedColumnNames: id
+            referencedTableName: subjects
+
+        - addForeignKeyConstraint:
+            baseColumnNames: template_id
+            baseTableName: notifications
+            constraintName: FK_NOTIFICATIONS_ON_TEMPLATE
+            referencedColumnNames: id
+            referencedTableName: templates
+
+        - addForeignKeyConstraint:
+            baseColumnNames: subject_id
+            baseTableName: queues
+            constraintName: FK_QUEUES_ON_SUBJECT
+            referencedColumnNames: id
+            referencedTableName: subjects
+
+        - addForeignKeyConstraint:
+            baseColumnNames: teacher_id
+            baseTableName: subjects
+            constraintName: FK_SUBJECTS_ON_TEACHER
+            referencedColumnNames: id
+            referencedTableName: users
