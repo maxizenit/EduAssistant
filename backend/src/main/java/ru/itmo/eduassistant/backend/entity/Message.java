@@ -1,7 +1,10 @@
 package ru.itmo.eduassistant.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,7 +12,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "messages")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
