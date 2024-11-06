@@ -5,6 +5,13 @@ databaseChangeLog:
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
+            baseColumnNames: teacher_id
+            baseTableName: channels
+            constraintName: FK_CHANNELS_ON_TEACHER
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
             baseColumnNames: author_id
             baseTableName: dialogs
             constraintName: FK_DIALOGS_ON_AUTHOR
@@ -12,18 +19,18 @@ databaseChangeLog:
             referencedTableName: users
 
         - addForeignKeyConstraint:
+            baseColumnNames: channel_id
+            baseTableName: dialogs
+            constraintName: FK_DIALOGS_ON_CHANNEL
+            referencedColumnNames: id
+            referencedTableName: channels
+
+        - addForeignKeyConstraint:
             baseColumnNames: recipient_id
             baseTableName: dialogs
             constraintName: FK_DIALOGS_ON_RECIPIENT
             referencedColumnNames: id
             referencedTableName: users
-
-        - addForeignKeyConstraint:
-            baseColumnNames: subject_id
-            baseTableName: dialogs
-            constraintName: FK_DIALOGS_ON_SUBJECT
-            referencedColumnNames: id
-            referencedTableName: subjects
 
         - addForeignKeyConstraint:
             baseColumnNames: author_id
@@ -47,11 +54,11 @@ databaseChangeLog:
             referencedTableName: users
 
         - addForeignKeyConstraint:
-            baseColumnNames: subject_id
+            baseColumnNames: channel_id
             baseTableName: notifications
-            constraintName: FK_NOTIFICATIONS_ON_SUBJECT
+            constraintName: FK_NOTIFICATIONS_ON_CHANNEL
             referencedColumnNames: id
-            referencedTableName: subjects
+            referencedTableName: channels
 
         - addForeignKeyConstraint:
             baseColumnNames: template_id
@@ -61,15 +68,15 @@ databaseChangeLog:
             referencedTableName: templates
 
         - addForeignKeyConstraint:
-            baseColumnNames: subject_id
+            baseColumnNames: channel_id
             baseTableName: queues
-            constraintName: FK_QUEUES_ON_SUBJECT
+            constraintName: FK_QUEUES_ON_CHANNEL
             referencedColumnNames: id
-            referencedTableName: subjects
+            referencedTableName: channels
 
         - addForeignKeyConstraint:
-            baseColumnNames: teacher_id
-            baseTableName: subjects
-            constraintName: FK_SUBJECTS_ON_TEACHER
+            baseColumnNames: queue_id
+            baseTableName: queues_to_users
+            constraintName: fk_quetouse_on_queue
             referencedColumnNames: id
-            referencedTableName: users
+            referencedTableName: queues
