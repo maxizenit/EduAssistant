@@ -26,6 +26,7 @@ public class QueueController {
     private final QueueMapper queueMapper;
     private final QueueService queueService;
 
+//    TODO мб поменять возвращаемое значение на QueueResponse
     @PostMapping("/")
     public long create(@RequestParam long channelId, @RequestParam String name, @RequestParam LocalDateTime expirationDate) {
         return queueService.createQueue(channelId, name, expirationDate);

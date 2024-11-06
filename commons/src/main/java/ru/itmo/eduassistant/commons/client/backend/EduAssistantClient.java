@@ -2,14 +2,13 @@ package ru.itmo.eduassistant.commons.client.backend;
 
 import org.springframework.web.client.RestTemplate;
 import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
+import ru.itmo.eduassistant.commons.dto.dialog.*;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
-import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
 import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
-import ru.itmo.eduassistant.commons.dto.channel.QuestionRequest;
 import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
@@ -27,39 +26,48 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         return this.get("/user/" + telegramId, UserResponse.class, Map.of());
     }
 
-    // Subject
-    public AllChannelsResponse getStudentSubjects(Long studentId) {
-        return this.get("/subject", AllChannelsResponse.class, Map.of("studentId", studentId));
+    // Dialog
+    public QuestionResponse createQuestion(Long studentId, Long channelId, String text) {
+        return this.post("/dialog/question", QuestionResponse.class,
+                Map.of(), new NewQuestionRequest(studentId, channelId, text));
     }
 
-    public AllChannelsResponse getTeacherSubjects(Long teacherId) {
-        return this.get("/subject/teacher/" + teacherId, AllChannelsResponse.class, Map.of());
+    public AllDialogsResponse getDialogs(Long userId) {
+        return this.get("/dialog", AllDialogsResponse.class, Map.of("userId", userId));
     }
 
-    public ChannelResponse getSubject(Long subjectId) {
-        return this.get("/subject/" + subjectId, ChannelResponse.class, Map.of());
+    public MessageResponse addMessageToDialog(Long userId, String text, Long dialogId){
+        return this.post("/dialog", MessageResponse.class, Map.of(), new NewMessageRequest(userId, text, dialogId));
     }
 
-    public AllNotificationsResponse getSubjectNotifications(Long subjectId, NotificationStatus status) {
-        return this.post(String.format("/subject/%s/notifications", subjectId), AllNotificationsResponse.class, Map.of("notificationStatus", status), null);
+    public void markAsDiscussed(Long dialogId) {
+        this.post("/dialog/close", void.class, Map.of("dialogId", dialogId), null);
     }
 
-    public void createQuestion(Long userId, Long subjectId, String text) {
-        this.post(String.format("/subject/%s/questions", subjectId), Long.class, Map.of(), new QuestionRequest(userId, text));
+    // Channel
+    public AllChannelsResponse getStudentChannels(Long studentId) {
+        return this.get("/channel", AllChannelsResponse.class, Map.of("studentId", studentId));
     }
 
-    public AllQuestionsResponse getAllQuestions(Long subjectId) {
-        return this.get(String.format("/subject/%s/questions", subjectId), AllQuestionsResponse.class, Map.of());
+    public AllChannelsResponse getTeacherChannels(Long teacherId) {
+        return this.get("/channel/teacher/" + teacherId, AllChannelsResponse.class, Map.of());
     }
-
-    public void markAsDiscussed(Long subjectId, Long questionId) {
-        this.post(String.format("/subject/%s/questions/%s", subjectId, questionId), void.class, Map.of(), null);
+    public ChannelResponse getChannel(Long channelId) {
+        return this.get("/channel/" + channelId, ChannelResponse.class, Map.of());
+    }
+//    TODO uncomment when implemented
+//    public Long createChannel(Long teacherId, String title) {
+//        return this.post("/channel", Long.class, Map.of("teacherId", teacherId, "title", title), null);
+//    }
+    public AllNotificationsResponse getChannelNotifications(Long channel, NotificationStatus status) {
+        return this.post(String.format("/channel/%s/notifications", channel),
+                AllNotificationsResponse.class, Map.of("status", status), null);
     }
 
     // Queue
-    public Long createQueue(Long subjectId, String name, LocalDateTime expirationDate) {
+    public Long createQueue(Long channelId, String name, LocalDateTime expirationDate) {
         return this.post("/queue", Long.class,
-                Map.of("subjectId", subjectId, "name", name, "expirationDate", expirationDate), null);
+                Map.of("channelId", channelId, "name", name, "expirationDate", expirationDate), null);
     }
 
     public void deleteQueue(Long id) {

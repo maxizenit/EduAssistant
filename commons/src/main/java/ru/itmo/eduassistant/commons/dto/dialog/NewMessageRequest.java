@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.commons.dto.question;
+package ru.itmo.eduassistant.commons.dto.dialog;
 
 public record NewMessageRequest(
         long userId,
