@@ -2,52 +2,52 @@ package ru.itmo.eduassistant.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.eduassistant.backend.mapper.SubjectMapper;
-import ru.itmo.eduassistant.backend.service.SubjectService;
-import ru.itmo.eduassistant.backend.service.impl.DialogService;
+import ru.itmo.eduassistant.backend.mapper.ChannelMapper;
+import ru.itmo.eduassistant.backend.service.ChannelService;
+import ru.itmo.eduassistant.backend.service.impl.DialogServiceImpl;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.question.NewMessageRequest;
 import ru.itmo.eduassistant.commons.dto.question.NewMessageResponse;
-import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
-import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
-import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
+import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
+import ru.itmo.eduassistant.commons.dto.channel.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/subject")
+@RequestMapping("/channel")
 @RequiredArgsConstructor
-public class SubjectController {
+public class ChannelController {
 
-    private final SubjectMapper subjectMapper;
-    private final SubjectService service;
-    private final DialogService dialogService;
+    private final ChannelMapper channelMapper;
+    private final ChannelService service;
+    private final DialogServiceImpl dialogService;
 
     @GetMapping
-    public AllSubjectsResponse getAllStudentsSubjects(@RequestParam long studentId) {
-        List<SubjectResponse> response = service.getAllSubjectsByStudent(studentId)
+    public AllChannelsResponse getAllStudentsChannel(@RequestParam long studentId) {
+        List<ChannelResponse> response = service.getAllChannelByStudent(studentId)
                 .stream()
-                .map(subjectMapper::toResponse)
+                .map(channelMapper::toResponse)
                 .toList();
 
-        return new AllSubjectsResponse(response);
+        return new AllChannelsResponse(response);
     }
 
     @GetMapping("/teacher/{teacherId}")
-    public AllSubjectsResponse getAllTeachersSubjects(@PathVariable long teacherId) {
-        List<SubjectResponse> response = service.getAllTeachersSubjects(teacherId)
+    public AllChannelsResponse getAllTeachersChannel(@PathVariable long teacherId) {
+        List<ChannelResponse> response = service.getAllTeachersChannel(teacherId)
                 .stream()
-                .map(subjectMapper::toResponse)
+                .map(channelMapper::toResponse)
                 .toList();
 
-        return new AllSubjectsResponse(response);
+        return new AllChannelsResponse(response);
     }
 
     @GetMapping("/{id}")
-    public SubjectResponse getSubject(@PathVariable long id) {
-        return subjectMapper.toResponse(service.getSubject(id));
+    public ChannelResponse getChannel(@PathVariable long id) {
+        return channelMapper.toResponse(service.getChannel(id));
     }
 
     @GetMapping("/{id}/notifications")

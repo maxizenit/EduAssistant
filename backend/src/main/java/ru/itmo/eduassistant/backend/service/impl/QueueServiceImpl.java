@@ -1,11 +1,11 @@
-package ru.itmo.eduassistant.backend.service.Impl;
+package ru.itmo.eduassistant.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.repository.QueueRepository;
-import ru.itmo.eduassistant.backend.repository.SubjectRepository;
+import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.repository.UserRepository;
 import ru.itmo.eduassistant.backend.service.QueueService;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QueueServiceImpl implements QueueService {
-    private final SubjectRepository subjectRepository;
+    private final ChannelRepository channelRepository;
     private final QueueRepository queueRepository;
     private final UserRepository userRepository;
 
     @Override
-    public long createQueue(long subjectId, String name, LocalDateTime expirationDate) {
+    public long createQueue(long channelId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setSubject(subjectRepository.findById(subjectId).orElseThrow());
+        queue.setChannel(channelRepository.findById(channelId).orElseThrow());
         queue.setExpirationDate(expirationDate);
         return queueRepository.save(queue).getId();
     }
@@ -51,7 +51,7 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public List<Queue> getAllTeacherQueues(long teacherId) {
         return queueRepository.findAll().stream()
-                .filter(queue -> queue.getSubject().getTeacher().getId() == teacherId)
+                .filter(queue -> queue.getChannel().getTeacher().getId() == teacherId)
                 .collect(Collectors.toList());
     }
 

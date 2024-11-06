@@ -22,14 +22,13 @@ public class Queue {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
     @ManyToMany
     @JoinTable(
             name = "queues_to_users",
             joinColumns = @JoinColumn(name = "queue_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-
     private List<User> users;
 }

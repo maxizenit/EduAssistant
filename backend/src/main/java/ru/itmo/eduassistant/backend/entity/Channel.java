@@ -9,8 +9,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "subjects")
-public class Subject {
+@Table(name = "channels")
+public class Channel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,15 +21,19 @@ public class Subject {
     @JoinColumn(name = "teacher_id")
     private User teacher;
 
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "channel")
     private List<Queue> queues;
 
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "channel")
     private List<Notification> notifications;
 
-    @ManyToMany(mappedBy = "subjects")
-    private List<Group> groups;
-
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "channel")
     private List<Dialog> dialogs;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_to_channel",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 }

@@ -15,17 +15,13 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "template_id")
-    private Template template;
-
     private String body;
 
     private LocalDateTime datetime;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
     private Boolean isArchived;
 }

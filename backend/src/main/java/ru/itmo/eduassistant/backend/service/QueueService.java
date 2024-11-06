@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface QueueService {
-    long createQueue(long subjectId, String name, LocalDateTime expirationDate);
+    long createQueue(long channelId, String name, LocalDateTime expirationDate);
 
     void deleteQueue(long id);
 

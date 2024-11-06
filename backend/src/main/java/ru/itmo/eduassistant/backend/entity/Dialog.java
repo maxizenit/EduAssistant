@@ -23,7 +23,6 @@ public class Dialog {
     @JoinColumn(name = "author_id")
     private User author;
 
-
     @Column(name = "first_message")
     private String firstMessage;
 
@@ -32,8 +31,8 @@ public class Dialog {
     private User recipient;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
     @OneToMany(mappedBy = "dialog")
     private List<Message> messages;

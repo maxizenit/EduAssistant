@@ -26,9 +26,8 @@ public class User {
 
     private String fio;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @ManyToMany(mappedBy = "users")
+    private List<Channel> channel;
 
     @ManyToMany(mappedBy = "users")
     private List<Queue> queues;

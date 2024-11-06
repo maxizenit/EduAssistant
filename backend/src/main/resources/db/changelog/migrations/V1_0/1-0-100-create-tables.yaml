@@ -11,6 +11,24 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
+                    primaryKeyName: pk_channels
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: teacher_id
+                  type: BIGINT
+            tableName: channels
+
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
                     primaryKeyName: pk_dialogs
                   name: id
                   type: BIGINT
@@ -22,43 +40,14 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: first_message
-                  type: TEXT
+                  type: VARCHAR(255)
               - column:
                   name: recipient_id
                   type: BIGINT
               - column:
-                  name: subject_id
+                  name: channel_id
                   type: BIGINT
             tableName: dialogs
-
-        - createTable:
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_groups
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-            tableName: groups
-
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    nullable: false
-                  name: group_id
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: subject_id
-                  type: BIGINT
-            tableName: groups_to_subjects
 
         - createTable:
             columns:
@@ -72,7 +61,7 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: body
-                  type: TEXT
+                  type: VARCHAR(255)
               - column:
                   name: datetime
                   type: DATETIME
@@ -102,12 +91,12 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: body
-                  type: TEXT
+                  type: VARCHAR(255)
               - column:
                   name: datetime
                   type: DATETIME
               - column:
-                  name: subject_id
+                  name: channel_id
                   type: BIGINT
               - column:
                   name: is_archived
@@ -131,7 +120,7 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR(255)
               - column:
-                  name: subject_id
+                  name: channel_id
                   type: BIGINT
             tableName: queues
 
@@ -156,55 +145,33 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: pk_subjects
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-              - column:
-                  name: teacher_id
-                  type: BIGINT
-            tableName: subjects
-
-        - createTable:
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_templates
-                  name: id
-                  type: BIGINT
-              - column:
-                  name: body
-                  type: VARCHAR(255)
-            tableName: templates
-
-        - createTable:
-            columns:
-              - column:
-                  autoIncrement: true
-                  constraints:
-                    nullable: false
-                    primaryKey: true
                     primaryKeyName: pk_users
                   name: id
                   type: BIGINT
               - column:
-                  name: username
-                  type: VARCHAR(255)
-              - column:
                   name: telegram_id
                   type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR(255)
               - column:
                   name: role
                   type: VARCHAR(255)
               - column:
                   name: fio
                   type: VARCHAR(255)
-              - column:
-                  name: group_id
-                  type: BIGINT
             tableName: users
+
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: channel_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: users_to_channel
