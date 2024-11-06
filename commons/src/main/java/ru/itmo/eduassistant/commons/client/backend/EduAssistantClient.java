@@ -12,6 +12,7 @@ import ru.itmo.eduassistant.commons.dto.queue.StudentRequest;
 import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
 import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
+import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -22,13 +23,18 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         super(restTemplate, serviceUri);
     }
 
+    //User
+    public UserResponse getUser(Long telegramId) {
+        return this.get("/user/" + telegramId, UserResponse.class, Map.of());
+    }
+
     //Subject
     public AllSubjectsResponse getStudentSubjects(Long studentId) {
         return this.get("/subject", AllSubjectsResponse.class, Map.of("studentId", studentId));
     }
 
     public AllSubjectsResponse getTeacherSubjects(Long teacherId) {
-        return this.get("/subject/teacher" + teacherId, AllSubjectsResponse.class, Map.of());
+        return this.get("/subject/teacher/" + teacherId, AllSubjectsResponse.class, Map.of());
     }
 
     public SubjectResponse getSubject(Long subjectId) {
@@ -51,7 +57,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         this.post(String.format("/subject/%s/questions/%s", subjectId, questionId), void.class, Map.of(), null);
     }
 
-    // Queues
+    // Queue
     public Long createQueue(Long subjectId, LocalDateTime expirationDate) {
         return this.post("/queue", Long.class, Map.of("subjectId", subjectId, "expirationDate", expirationDate), null);
     }
@@ -69,7 +75,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     public AllTeacherQueuesResponse getTeacherQueues(Long teacherId) {
-        return this.get("/queue/teacher" + teacherId, AllTeacherQueuesResponse.class, Map.of());
+        return this.get("/queue/teacher/" + teacherId, AllTeacherQueuesResponse.class, Map.of());
     }
 
     public void addNewStudentToQueue(Long queueId, Long studentId) {
