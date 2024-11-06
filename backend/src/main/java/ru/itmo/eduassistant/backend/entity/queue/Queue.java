@@ -2,13 +2,18 @@ package ru.itmo.eduassistant.backend.entity.queue;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import ru.itmo.eduassistant.backend.entity.subject.Subject;
 import ru.itmo.eduassistant.backend.entity.user.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "queues")
 public class Queue {
     @Id
@@ -29,5 +34,5 @@ public class Queue {
             joinColumns = @JoinColumn(name = "queue_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
 
-    private Set<User> users;
+    private List<User> users;
 }

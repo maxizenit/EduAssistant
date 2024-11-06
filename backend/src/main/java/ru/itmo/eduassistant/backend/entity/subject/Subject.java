@@ -1,6 +1,8 @@
 package ru.itmo.eduassistant.backend.entity.subject;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import ru.itmo.eduassistant.backend.entity.dialog.Dialog;
 import ru.itmo.eduassistant.backend.entity.group.Group;
 import ru.itmo.eduassistant.backend.entity.notification.Notification;
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "subjects")
 public class Subject {
     @Id
@@ -30,7 +34,7 @@ public class Subject {
     private List<Notification> notifications;
 
     @ManyToMany(mappedBy = "subjects")
-    private Set<Group> groups;
+    private List<Group> groups;
 
     @OneToMany(mappedBy = "subject")
     private List<Dialog> dialogs;

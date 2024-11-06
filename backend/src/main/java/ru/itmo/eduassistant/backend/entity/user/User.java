@@ -1,6 +1,8 @@
 package ru.itmo.eduassistant.backend.entity.user;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import ru.itmo.eduassistant.backend.entity.dialog.Dialog;
 import ru.itmo.eduassistant.backend.entity.group.Group;
 import ru.itmo.eduassistant.backend.entity.message.Message;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User {
     @Id
@@ -27,7 +31,7 @@ public class User {
     private Group group;
 
     @ManyToMany(mappedBy = "users")
-    private Set<Queue> queues;
+    private List<Queue> queues;
 
     @OneToMany(mappedBy = "author")
     private List<Dialog> authoredDialogs;

@@ -1,6 +1,8 @@
 package ru.itmo.eduassistant.backend.entity.dialog;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import ru.itmo.eduassistant.backend.entity.message.Message;
 import ru.itmo.eduassistant.backend.entity.subject.Subject;
 import ru.itmo.eduassistant.backend.entity.user.User;
@@ -8,6 +10,8 @@ import ru.itmo.eduassistant.backend.entity.user.User;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "dialogs")
 public class Dialog {
     @Id
@@ -21,7 +25,7 @@ public class Dialog {
     private User author;
 
 
-    @JoinColumn(name = "first_message")
+    @Column(name = "first_message")
     private Long firstMessageId;
 
     @ManyToOne
