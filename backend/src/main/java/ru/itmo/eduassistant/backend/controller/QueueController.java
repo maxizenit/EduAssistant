@@ -26,13 +26,18 @@ public class QueueController {
 
     }
 
+    @GetMapping("/{id}")
+    void get(@PathVariable long id) {
+
+    }
+
     @GetMapping("/student/{studentId}")
-    public AllStudentQueuesResponse getAllStudentsQueue(@RequestParam long studentId) {
+    public AllStudentQueuesResponse getAllStudentsQueue(@PathVariable long studentId) {
         return null;
     }
 
-    @GetMapping("/teacher/teacherId")
-    public AllTeacherQueuesResponse getAllTeachersQueues(@RequestParam long teacherId) {
+    @GetMapping("/teacher/{teacherId}")
+    public AllTeacherQueuesResponse getAllTeachersQueues(@PathVariable long teacherId) {
         return null;
     }
 
