@@ -4,16 +4,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.itmo.eduassistant.backend.entity.Channel;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
-import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.channel.QuestionRequest;
 
 import java.util.List;
 
-public interface SubjectService {
-    List<Channel> getAllSubjectsByStudent(long studentId);
+public interface ChannelService {
+    List<Channel> getAllChannelByStudent(long studentId);
 
-    List<Channel> getAllTeachersSubjects(long teacherId);
+    List<Channel> getAllTeachersChannel(long teacherId);
 
-    Channel getSubject(long id);
+    Channel getChannel(long id);
 
     AllNotificationsResponse getAllNotifications(long id, NotificationStatus status);
 

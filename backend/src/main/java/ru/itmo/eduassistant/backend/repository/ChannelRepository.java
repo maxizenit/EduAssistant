@@ -7,7 +7,7 @@ import ru.itmo.eduassistant.backend.entity.Channel;
 
 import java.util.List;
 
-public interface SubjectRepository extends JpaRepository<Channel, Long> {
-    @Query("SELECT s FROM Subject s WHERE s.teacher.id = :userId")
-    List<Channel> findSubjectsByUserId(@Param("userId") Long userId);
+public interface ChannelRepository extends JpaRepository<Channel, Long> {
+    @Query("SELECT c FROM Channel c WHERE s.teacher.id = :userId")
+    List<Channel> findChannelsByUserId(@Param("userId") Long userId);
 }

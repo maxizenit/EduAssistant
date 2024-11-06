@@ -1,11 +1,11 @@
-package ru.itmo.eduassistant.backend.service.Impl;
+package ru.itmo.eduassistant.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.repository.QueueRepository;
-import ru.itmo.eduassistant.backend.repository.SubjectRepository;
+import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.repository.UserRepository;
 import ru.itmo.eduassistant.backend.service.QueueService;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QueueServiceImpl implements QueueService {
-    private final SubjectRepository subjectRepository;
+    private final ChannelRepository channelRepository;
     private final QueueRepository queueRepository;
     private final UserRepository userRepository;
 
@@ -25,7 +25,7 @@ public class QueueServiceImpl implements QueueService {
     public long createQueue(long subjectId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setChannel(subjectRepository.findById(subjectId).orElseThrow());
+        queue.setChannel(channelRepository.findById(subjectId).orElseThrow());
         queue.setExpirationDate(expirationDate);
         return queueRepository.save(queue).getId();
     }

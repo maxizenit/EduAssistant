@@ -32,8 +32,8 @@ public class Channel {
 
     @ManyToMany
     @JoinTable(
-            name = "queues_to_users",
-            joinColumns = @JoinColumn(name = "queue_id"),
+            name = "users_to_channel",
+            joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 }

@@ -4,10 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import ru.itmo.eduassistant.backend.entity.Channel;
-import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
+import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface SubjectMapper {
+public interface ChannelMapper {
     @Mapping(target = "teacherName", source = "teacher.fio")
-    SubjectResponse toResponse(Channel channel);
+    ChannelResponse toResponse(Channel channel);
 }

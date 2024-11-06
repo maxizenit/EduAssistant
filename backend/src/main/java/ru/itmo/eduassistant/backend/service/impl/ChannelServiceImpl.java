@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.*;
 import ru.itmo.eduassistant.backend.repository.*;
-import ru.itmo.eduassistant.backend.service.SubjectService;
+import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
-import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.channel.QuestionRequest;
 import ru.itmo.eduassistant.commons.exception.DialogNotFoundException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
-import ru.itmo.eduassistant.commons.exception.SubjectNotFoundException;
+import ru.itmo.eduassistant.commons.exception.ChannelNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -19,40 +19,35 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectServiceImpl implements SubjectService {
+public class ChannelServiceImpl implements ChannelService {
     //TODO вынести вызовы в сервисы
-
-    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
+    private final ChannelRepository channelRepository;
     private final MessageRepository messageRepository;
     private final DialogRepository dialogRepository;
 
     @Override
-    public List<Subject> getAllSubjectsByStudent(long studentId) {
-        long groupId = userRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("User with id %s not found".formatted(studentId)))
-                .getGroup()
-                .getId();
-
-        return groupRepository.findSubjectsByGroupId(groupId);
+    public List<Channel> getAllChannelByStudent(long studentId) {
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id %s not found".formatted(studentId)));
+        return student.getChannel();
     }
 
     @Override
-    public List<Subject> getAllTeachersSubjects(long teacherId) {
-        return subjectRepository.findSubjectsByUserId(teacherId);
+    public List<Channel> getAllTeachersChannel(long teacherId) {
+        return channelRepository.findChannelsByUserId(teacherId);
     }
 
     @Override
-    public Subject getSubject(long id) {
-        return subjectRepository.findById(id)
-                .orElseThrow(() -> new SubjectNotFoundException("Subject with id %s not found".formatted(id)));
+    public Channel getChannel(long id) {
+        return channelRepository.findById(id)
+                .orElseThrow(() -> new ChannelNotFoundException("Subject with id %s not found".formatted(id)));
     }
 
     @Override
     public AllNotificationsResponse getAllNotifications(long id, NotificationStatus status) {
-        Subject subject = getSubject(id);
-        List<Notification> notificationList = subject.getNotifications();
+        Channel channel = getChannel(id);
+        List<Notification> notificationList = channel.getNotifications();
 
         List<NotificationResponse> notificationResponseList = notificationList
                 .stream()
@@ -60,12 +55,12 @@ public class SubjectServiceImpl implements SubjectService {
                         new NotificationResponse(notif.getId(), notif.getBody(), notif.getDatetime()))
                 .toList();
 
-        return new AllNotificationsResponse(subject.getName(), notificationResponseList);
+        return new AllNotificationsResponse(channel.getName(), notificationResponseList);
     }
 
     @Override
     public void createQuestion(long id, QuestionRequest request) {
-        Subject subject = getSubject(id);
+        Channel channel = getChannel(id);
         User author = userRepository.findById(request.studentId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("User with id %s not found".formatted(request.studentId())));
@@ -73,16 +68,16 @@ public class SubjectServiceImpl implements SubjectService {
 
         Message message = new Message();
         message.setAuthor(author);
-        message.setRecipient(subject.getTeacher());
+        message.setRecipient(channel.getTeacher());
         message.setBody(request.text());
         message.setDatetime(LocalDateTime.now());
 
         Dialog dialog = new Dialog()
-                .setSubject(subject)
+                .setChannel(channel)
                 .setMessages(Collections.singletonList(message))
                 .setFirstMessage(message.getBody())
                 .setAuthor(author)
-                .setRecipient(subject.getTeacher())
+                .setRecipient(channel.getTeacher())
                 .setIsClosed(false);
 
         dialogRepository.save(dialog);
@@ -92,9 +87,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<String> getAllQuestions(long id) {
-        Subject subject = getSubject(id);
+        Channel channel = getChannel(id);
 
-        return subject.getDialogs()
+        return channel.getDialogs()
                 .stream()
                 .map(Dialog::getFirstMessage)
                 .toList();
@@ -102,9 +97,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public void markAsDiscussed(long id, long dialogId) {
-        Subject subject = getSubject(id);
+        Channel channel = getChannel(id);
 
-        Dialog questionDialog = subject.getDialogs()
+        Dialog questionDialog = channel.getDialogs()
                 .stream()
                 .filter(dialog -> dialog.getId() == dialogId)
                 .findFirst()

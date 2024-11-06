@@ -8,9 +8,9 @@ import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
-import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
-import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
-import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
+import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
+import ru.itmo.eduassistant.commons.dto.channel.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
@@ -28,16 +28,16 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     // Subject
-    public AllSubjectsResponse getStudentSubjects(Long studentId) {
-        return this.get("/subject", AllSubjectsResponse.class, Map.of("studentId", studentId));
+    public AllChannelsResponse getStudentSubjects(Long studentId) {
+        return this.get("/subject", AllChannelsResponse.class, Map.of("studentId", studentId));
     }
 
-    public AllSubjectsResponse getTeacherSubjects(Long teacherId) {
-        return this.get("/subject/teacher/" + teacherId, AllSubjectsResponse.class, Map.of());
+    public AllChannelsResponse getTeacherSubjects(Long teacherId) {
+        return this.get("/subject/teacher/" + teacherId, AllChannelsResponse.class, Map.of());
     }
 
-    public SubjectResponse getSubject(Long subjectId) {
-        return this.get("/subject/" + subjectId, SubjectResponse.class, Map.of());
+    public ChannelResponse getSubject(Long subjectId) {
+        return this.get("/subject/" + subjectId, ChannelResponse.class, Map.of());
     }
 
     public AllNotificationsResponse getSubjectNotifications(Long subjectId, NotificationStatus status) {

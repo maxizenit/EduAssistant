@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.commons.dto.subject;
+package ru.itmo.eduassistant.commons.dto.channel;
 
 public record QuestionRequest(
         Long studentId,

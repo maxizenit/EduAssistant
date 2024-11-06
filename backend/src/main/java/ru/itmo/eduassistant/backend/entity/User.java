@@ -26,9 +26,8 @@ public class User {
 
     private String fio;
 
-    @ManyToMany
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
+    @ManyToMany(mappedBy = "users")
+    private List<Channel> channel;
 
     @ManyToMany(mappedBy = "users")
     private List<Queue> queues;
