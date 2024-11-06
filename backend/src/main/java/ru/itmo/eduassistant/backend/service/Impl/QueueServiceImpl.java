@@ -25,7 +25,7 @@ public class QueueServiceImpl implements QueueService {
     public long createQueue(long subjectId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setSubject(subjectRepository.findById(subjectId).orElseThrow());
+        queue.setChannel(subjectRepository.findById(subjectId).orElseThrow());
         queue.setExpirationDate(expirationDate);
         return queueRepository.save(queue).getId();
     }
@@ -51,7 +51,7 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public List<Queue> getAllTeacherQueues(long teacherId) {
         return queueRepository.findAll().stream()
-                .filter(queue -> queue.getSubject().getTeacher().getId() == teacherId)
+                .filter(queue -> queue.getChannel().getTeacher().getId() == teacherId)
                 .collect(Collectors.toList());
     }
 
