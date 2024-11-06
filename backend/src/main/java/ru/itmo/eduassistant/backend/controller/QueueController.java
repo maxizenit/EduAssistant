@@ -45,15 +45,15 @@ public class QueueController {
     @GetMapping("/student/{studentId}")
     public AllStudentQueuesResponse getAllStudentsQueue(@PathVariable long studentId) {
         List<Queue> queues = queueService.getAllStudentQueues(studentId);
-        List<QueueResponse> queueResponses = queues.stream().map(queueMapper::toQueueResponse).toList();
-        return queueMapper.toQueueResponseList(queueResponses);
+        List<QueueResponse> queueResponses = queueMapper.toQueueResponseList(queues);
+        return new AllStudentQueuesResponse(queueResponses);
     }
 
     @GetMapping("/teacher/{teacherId}")
     public AllTeacherQueuesResponse getAllTeachersQueues(@PathVariable long teacherId) {
         List<Queue> queues = queueService.getAllTeacherQueues(teacherId);
-        List<QueueResponse> queueResponses = queues.stream().map(queueMapper::toQueueResponse).toList();
-        return queueMapper.toTeacherQueueResponseList(queueResponses);
+        List<QueueResponse> queueResponses = queueMapper.toQueueResponseList(queues);
+        return new AllTeacherQueuesResponse(queueResponses);
     }
 
     @PostMapping("/{id}/students")
