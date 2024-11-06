@@ -8,49 +8,61 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.itmo.eduassistant.backend.entity.Queue;
+import ru.itmo.eduassistant.backend.mapper.QueueMapper;
+import ru.itmo.eduassistant.backend.service.QueueService;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/queue")
 @RequiredArgsConstructor
 public class QueueController {
 
+    private final QueueMapper queueMapper;
+    private final QueueService queueService;
+
     @PostMapping("/")
-    public long create(@RequestParam long subjectId, @RequestParam LocalDateTime expirationDate) {
-        return 1L;
+    public long create(@RequestParam long subjectId, @RequestParam String name, @RequestParam LocalDateTime expirationDate) {
+        return queueService.createQueue(subjectId, name, expirationDate);
     }
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable long id) {
-
+    public void delete(@PathVariable long id) {
+        queueService.deleteQueue(id);
     }
 
     @GetMapping("/{id}")
     public QueueResponse get(@PathVariable long id) {
-        return null;
+        Queue queue = queueService.getQueueById(id);
+        return queueMapper.toQueueResponse(queue);
     }
 
     @GetMapping("/student/{studentId}")
     public AllStudentQueuesResponse getAllStudentsQueue(@PathVariable long studentId) {
-        return null;
+        List<Queue> queues = queueService.getAllStudentQueues(studentId);
+        List<QueueResponse> queueResponses = queues.stream().map(queueMapper::toQueueResponse).toList();
+        return queueMapper.toQueueResponseList(queueResponses);
     }
 
     @GetMapping("/teacher/{teacherId}")
     public AllTeacherQueuesResponse getAllTeachersQueues(@PathVariable long teacherId) {
-        return null;
+        List<Queue> queues = queueService.getAllTeacherQueues(teacherId);
+        List<QueueResponse> queueResponses = queues.stream().map(queueMapper::toQueueResponse).toList();
+        return queueMapper.toTeacherQueueResponseList(queueResponses);
     }
 
     @PostMapping("/{id}/students")
-    public void  addNewStudent(@PathVariable long id, @RequestParam long studentId) {
-
+    public void addNewStudent(@PathVariable long id, @RequestParam long studentId) {
+        queueService.addStudentToQueue(id, studentId);
     }
 
     @DeleteMapping("/{id}/students/{studentId}")
     public void deleteStudentFromQueue(@PathVariable long id, @PathVariable long studentId) {
-
+        queueService.removeStudentFromQueue(id, studentId);
     }
 }
