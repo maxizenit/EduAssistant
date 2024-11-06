@@ -11,6 +11,8 @@ spring:
     database: h2
     hibernate:
       ddl-auto: none
-
+  h2:
+    console:
+      enabled: true
 server:
   port: 8080
