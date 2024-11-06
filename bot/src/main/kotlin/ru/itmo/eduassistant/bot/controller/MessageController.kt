@@ -10,6 +10,7 @@ import ru.itmo.eduassistant.commons.dto.telegram.SendNotificationRequest
 @RestController
 @RequestMapping("/messages")
 class MessageController {
+
     @PostMapping
     fun receiveMessage(@RequestBody request: SendNotificationRequest): ResponseEntity<*> {
         return ResponseEntity.ok(null)

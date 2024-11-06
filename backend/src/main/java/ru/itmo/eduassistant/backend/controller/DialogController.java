@@ -17,7 +17,7 @@ public class DialogController {
     private final DialogMapper dialogMapper;
 
     @PostMapping("/question")
-    public QuestionResponse createQuestion(NewQuestionRequest request) {
+    public QuestionResponse createQuestion(@RequestBody NewQuestionRequest request) {
         return messageMapper.toQuestionResponse(dialogService.createQuestion(request));
     }
 
