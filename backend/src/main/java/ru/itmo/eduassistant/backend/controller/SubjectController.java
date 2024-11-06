@@ -5,33 +5,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.backend.model.NotificationStatus;
+import ru.itmo.eduassistant.commons.dto.notofication.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
 
-@RestController("/subject")
+@RestController
+@RequestMapping("/subject")
 @RequiredArgsConstructor
 public class SubjectController {
 
-    @GetMapping("/")
-    void getAllSubjects(@RequestParam long studentId) {
-
+    @GetMapping()
+    public AllSubjectsResponse getAllSubjects(@RequestParam long studentId) {
+        return null;
     }
 
     @GetMapping("/{id}")
-    void getSubject(@PathVariable long id) {
-
+    public SubjectResponse getSubject(@PathVariable long id) {
+        return new SubjectResponse(1l, "name", "teacherName");
     }
 
     @PostMapping("/{id}/notifications")
-    void createNotification(@PathVariable long id) {
-
-    }
-
-    @PostMapping("/{id}/notifications")
-    void getAllNotifications(@PathVariable long id, @RequestParam NotificationStatus status) {
-
+    public AllNotificationsResponse getAllNotifications(@PathVariable long id, @RequestParam NotificationStatus status) {
+        return null;
     }
 
     @PostMapping("/{id}/questions")
