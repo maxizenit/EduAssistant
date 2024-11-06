@@ -187,6 +187,6 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: queues_id
+                  name: user_id
                   type: BIGINT
-            tableName: users_channel
+            tableName: users_to_channel
