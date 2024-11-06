@@ -8,7 +8,6 @@ import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
-import ru.itmo.eduassistant.commons.dto.queue.StudentRequest;
 import ru.itmo.eduassistant.commons.dto.subject.AllSubjectsResponse;
 import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
 import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
@@ -23,12 +22,12 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         super(restTemplate, serviceUri);
     }
 
-    //User
+    // User
     public UserResponse getUser(Long telegramId) {
         return this.get("/user/" + telegramId, UserResponse.class, Map.of());
     }
 
-    //Subject
+    // Subject
     public AllSubjectsResponse getStudentSubjects(Long studentId) {
         return this.get("/subject", AllSubjectsResponse.class, Map.of("studentId", studentId));
     }
@@ -42,7 +41,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     public AllNotificationsResponse getSubjectNotifications(Long subjectId, NotificationStatus status) {
-        return this.post(String.format("/subject/%s/notifications", subjectId), AllNotificationsResponse.class, Map.of("notification_status", status), null);
+        return this.post(String.format("/subject/%s/notifications", subjectId), AllNotificationsResponse.class, Map.of("notificationStatus", status), null);
     }
 
     public void createQuestion(Long userId, Long subjectId, String text) {
@@ -58,8 +57,9 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     // Queue
-    public Long createQueue(Long subjectId, LocalDateTime expirationDate) {
-        return this.post("/queue", Long.class, Map.of("subjectId", subjectId, "expirationDate", expirationDate), null);
+    public Long createQueue(Long subjectId, String name, LocalDateTime expirationDate) {
+        return this.post("/queue", Long.class,
+                Map.of("subjectId", subjectId, "name", name, "expirationDate", expirationDate), null);
     }
 
     public void deleteQueue(Long id) {
@@ -71,7 +71,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     public AllStudentQueuesResponse getStudentQueues(Long studentId) {
-        return this.get("/queue/student" + studentId, AllStudentQueuesResponse.class, Map.of());
+        return this.get("/queue/student/" + studentId, AllStudentQueuesResponse.class, Map.of());
     }
 
     public AllTeacherQueuesResponse getTeacherQueues(Long teacherId) {
@@ -79,7 +79,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     public void addNewStudentToQueue(Long queueId, Long studentId) {
-        this.post(String.format("/queue/%s/students", queueId), void.class, Map.of(), new StudentRequest(studentId));
+        this.post(String.format("/queue/%s/students", queueId), void.class, Map.of("studentId", studentId), null);
     }
 
     public void deleteStudentFromQueue(Long queueId, Long studentId) {
