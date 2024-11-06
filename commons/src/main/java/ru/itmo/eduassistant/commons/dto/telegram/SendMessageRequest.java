@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.commons.client.telegram.dto;
+package ru.itmo.eduassistant.commons.dto.telegram;
 
 public record SendMessageRequest(
         Long userId,

@@ -1,8 +1,7 @@
-package ru.itmo.eduassistant.commons.client.telegram;
+package ru.itmo.eduassistant.commons.client;
 
 import org.springframework.web.client.RestTemplate;
-import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
-import ru.itmo.eduassistant.commons.client.telegram.dto.SendMessageRequest;
+import ru.itmo.eduassistant.commons.dto.telegram.SendMessageRequest;
 
 public class TelegramMessageClient extends AbstractControllerHttpClient {
 

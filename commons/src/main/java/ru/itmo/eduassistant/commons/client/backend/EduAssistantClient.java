@@ -4,6 +4,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
 import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
 import ru.itmo.eduassistant.commons.client.backend.dto.*;
+import ru.itmo.eduassistant.commons.dto.notofication.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
+import ru.itmo.eduassistant.commons.dto.queue.StudentRequest;
+import ru.itmo.eduassistant.commons.dto.subject.QuestionRequest;
+import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -13,53 +18,46 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         super(restTemplate, serviceUri);
     }
 
+    //Subject
     public List<Subject> getSubjects(Long userId) {
-        return this.get("/subjects", new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId));
+        return this.get("/subject", new ParameterizedTypeReference<>() {
+        }, Map.of("student_id", userId));
     }
 
-    public List<Event> getSubjectEvents(Long userId, Long subjectId) {
-        return this.get("/events", new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId, "subject_id", subjectId));
+    public SubjectResponse getSubject(Long subjectId) {
+        return this.get("/subject/" + subjectId, SubjectResponse.class, Map.of());
     }
 
-    public List<Event> getUserEvents(Long userId) {
-        return this.get("/events", new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId));
+    public AllNotificationsResponse getSubjectNotifications(Long subjectId, NotificationStatus status) {
+        return this.post(String.format("/subject/%s/notifications", subjectId), AllNotificationsResponse.class,
+                Map.of("notification_status", status), null);
+    }
+    public Long createQuestion(Long userId, Long subjectId, String text) {
+        return this.post(String.format("/subject/%s/questions",subjectId), Long.class,
+                Map.of(), new QuestionRequest(userId, text));
     }
 
-    public Long postQuestion(Long userId, Long subjectId) {
-        return this.post("/question", Long.class,
-                Map.of("user_id", userId, "subject_id", subjectId), null);
+    public List<QuestionRequest> getQuestions(Long userId, Long subjectId) {
+        return this.get(String.format("/subject/%s/questions", subjectId), new ParameterizedTypeReference<>() {
+        }, Map.of());
     }
 
-    public List<Message> getMessages(Long userId, Long dialogId) {
-        return this.get("/messages", new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId, "dialog_id", dialogId));
-    }
-
-    public List<Dialog> getDialogs(Long userId, Long subjectId) {
-        return this.get("/dialogs", new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId, "subject_id", subjectId));
-    }
-
-    public Dialog getDialog(Long userId, Long dialogId) {
-        return this.get("/dialogs" + dialogId, new ParameterizedTypeReference<>() {
-        }, Map.of("user_id", userId));
+    public void markAsDiscussed(Long subjectId, Long questionId){
+        this.post(String.format("/subject/%s/questions/%s", subjectId, questionId),
+                void.class, Map.of(), null);
     }
 
     // Queues
-    public void createQueue(Long subjectId, Long groupId) {
+    public void createQueue(Long subjectId) {
+        this.put("/queue", void.class, Map.of("subject_id", subjectId), null);
+    }
 
-        this.put("/queues", void.class, Map.of(), null);
+    public void deleteQueue(Long id) {
+        this.delete("/queue/" + id, Map.of(), null);
     }
 
     public Queue getQueue(Long id) {
         return this.get("/queue/" + id, Queue.class, Map.of());
-    }
-
-    public void deleteQueue(Long id) {
-        this.delete("/queues/" + id, Map.of(), null);
     }
 
     public List<Queue> getQueues(Long userId) {
@@ -67,7 +65,11 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         }, Map.of("user_id", userId));
     }
 
-    public void applyToQueue(Long id, Long userId) {
-        this.post("/queues/" + id, void.class, Map.of("user_id", userId), null);
+    public void applyToQueue(Long id, Long studentId) {
+        this.post(String.format("/queue/%s/students", id), void.class, Map.of(), new StudentRequest(studentId));
+    }
+
+    public void deleteStudent(Long id, Long studentId) {
+        this.delete(String.format("/queue/%s/students/%s", id, studentId), Map.of(), null);
     }
 }
