@@ -27,8 +27,8 @@ public class QueueController {
     private final QueueService queueService;
 
     @PostMapping("/")
-    public long create(@RequestParam long subjectId, @RequestParam String name, @RequestParam LocalDateTime expirationDate) {
-        return queueService.createQueue(subjectId, name, expirationDate);
+    public long create(@RequestParam long channelId, @RequestParam String name, @RequestParam LocalDateTime expirationDate) {
+        return queueService.createQueue(channelId, name, expirationDate);
     }
 
     @DeleteMapping("/{id}")

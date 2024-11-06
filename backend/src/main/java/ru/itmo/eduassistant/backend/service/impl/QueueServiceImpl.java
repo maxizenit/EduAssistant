@@ -22,10 +22,10 @@ public class QueueServiceImpl implements QueueService {
     private final UserRepository userRepository;
 
     @Override
-    public long createQueue(long subjectId, String name, LocalDateTime expirationDate) {
+    public long createQueue(long channelId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setChannel(channelRepository.findById(subjectId).orElseThrow());
+        queue.setChannel(channelRepository.findById(channelId).orElseThrow());
         queue.setExpirationDate(expirationDate);
         return queueRepository.save(queue).getId();
     }
