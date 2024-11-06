@@ -70,6 +70,7 @@ public class SubjectServiceImpl implements SubjectService {
                 .orElseThrow(() ->
                         new EntityNotFoundException("User with id %s not found".formatted(request.studentId())));
 
+
         Message message = new Message();
         message.setAuthor(author);
         message.setRecipient(subject.getTeacher());
@@ -84,8 +85,9 @@ public class SubjectServiceImpl implements SubjectService {
                 .setRecipient(subject.getTeacher())
                 .setIsClosed(false);
 
-        messageRepository.save(message);
         dialogRepository.save(dialog);
+        message.setDialog(dialog);
+        messageRepository.save(message);
     }
 
     @Override

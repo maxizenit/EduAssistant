@@ -46,7 +46,7 @@ public class SubjectController {
         return subjectMapper.toResponse(service.getSubject(id));
     }
 
-    @PostMapping("/{id}/notifications")
+    @GetMapping("/{id}/notifications")
     public AllNotificationsResponse getAllNotifications(@PathVariable long id,
                                                         @RequestParam NotificationStatus status) {
         return service.getAllNotifications(id, status);
@@ -64,6 +64,6 @@ public class SubjectController {
 
     @PostMapping("/{id}/questions/{dialogId}")
     void markAsDiscussed(@PathVariable long id, @PathVariable long dialogId) {
-
+        service.markAsDiscussed(id, dialogId);
     }
 }
