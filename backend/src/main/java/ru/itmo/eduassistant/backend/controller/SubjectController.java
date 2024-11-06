@@ -21,7 +21,12 @@ import ru.itmo.eduassistant.commons.dto.subject.SubjectResponse;
 public class SubjectController {
 
     @GetMapping
-    public AllSubjectsResponse getAllSubjects(@RequestParam long studentId) {
+    public AllSubjectsResponse getAllStudentsSubjects(@RequestParam long studentId) {
+        return null;
+    }
+
+    @GetMapping("/teacher/{teacherId}")
+    public AllSubjectsResponse getAllTeachersSubjects(@PathVariable long teacherId) {
         return null;
     }
 
