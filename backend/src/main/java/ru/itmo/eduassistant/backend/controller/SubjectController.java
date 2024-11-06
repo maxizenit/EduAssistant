@@ -41,8 +41,8 @@ public class SubjectController {
     }
 
     @PostMapping("/{id}/questions")
-    void createQuestion(@PathVariable long id, @RequestBody QuestionRequest request) {
-
+    long createQuestion(@PathVariable long id, @RequestBody QuestionRequest request) {
+        return 1L;
     }
 
     @GetMapping("/{id}/questions")
