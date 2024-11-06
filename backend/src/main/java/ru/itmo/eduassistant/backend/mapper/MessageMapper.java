@@ -9,13 +9,13 @@ import ru.itmo.eduassistant.commons.dto.dialog.QuestionResponse;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MessageMapper {
-    @Mapping(source = "message.dialog.id", target = "dialogId")
-    @Mapping(source = "message.author.fio", target = "authorName")
-    @Mapping(source = "message.body", target = "text")
+    @Mapping(source = "dialog.id", target = "dialogId")
+    @Mapping(source = "author.fio", target = "authorName")
+    @Mapping(source = "body", target = "text")
     QuestionResponse toQuestionResponse(Message message);
 
-    @Mapping(source = "message.author.fio", target = "authorName")
-    @Mapping(source = "message.body", target = "text")
-    @Mapping(source = "message.datetime", target = "dateTime")
+    @Mapping(source = "author.fio", target = "authorName")
+    @Mapping(source = "body", target = "text")
+    @Mapping(source = "datetime", target = "dateTime")
     MessageResponse toMessageResponse(Message message);
 }
