@@ -1,8 +1,8 @@
 -- Преподаватели
 INSERT
-INTO users(username, role, fio)
-VALUES ('teacher1', 'TEACHER', 'fio1'),
-       ('teacher2', 'TEACHER', 'fio2');
+INTO users(username, role, fio, telegram_id)
+VALUES ('teacher1', 'TEACHER', 'fio1', 435345),
+       ('teacher2', 'TEACHER', 'fio2', 435435);
 
 INSERT INTO groups(name)
 VALUES ('Группа1'),
@@ -18,9 +18,9 @@ VALUES (1, 1),
 
 -- Студенты
 INSERT
-INTO users(username, role, fio, group_id)
-VALUES ('username1', 'STUDENT', 'fio1', 3),
-       ('username2', 'STUDENT', 'fio2', 4);
+INTO users(username, role, fio, group_id, telegram_id)
+VALUES ('username1', 'STUDENT', 'fio1', 3, 13242),
+       ('username2', 'STUDENT', 'fio2', 4, 543434);
 
 -- Диалоги
 INSERT

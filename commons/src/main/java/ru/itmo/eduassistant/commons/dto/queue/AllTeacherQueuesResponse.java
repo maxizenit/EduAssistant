@@ -1,6 +1,8 @@
 package ru.itmo.eduassistant.commons.dto.queue;
 
-public record AllTeacherQueuesResponse(
+import java.util.List;
 
+public record AllTeacherQueuesResponse(
+        List<QueueResponse> queues
 ) {
 }

@@ -196,6 +196,9 @@ databaseChangeLog:
                   name: username
                   type: VARCHAR(255)
               - column:
+                  name: telegram_id
+                  type: BIGINT
+              - column:
                   name: role
                   type: VARCHAR(255)
               - column:

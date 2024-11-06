@@ -3,6 +3,7 @@ package ru.itmo.eduassistant.backend.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.itmo.eduassistant.backend.model.UserRole;
 
 import java.util.List;
 
@@ -15,11 +16,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "telegram_id")
     private Long telegramId;
 
     private String username;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     private String fio;
 
