@@ -4,6 +4,6 @@ public record QueueResponse(
         long id,
         String name,
         String expirationDate,
-        String subjectName
+        String channelName
 ) {
 }
