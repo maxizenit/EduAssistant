@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.eduassistant.backend.mapper.ChannelMapper;
 import ru.itmo.eduassistant.backend.service.ChannelService;
-import ru.itmo.eduassistant.backend.service.impl.DialogService;
+import ru.itmo.eduassistant.backend.service.impl.DialogServiceImpl;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.question.AllQuestionsResponse;
@@ -23,7 +23,7 @@ public class ChannelController {
 
     private final ChannelMapper channelMapper;
     private final ChannelService service;
-    private final DialogService dialogService;
+    private final DialogServiceImpl dialogService;
 
     @GetMapping
     public AllChannelsResponse getAllStudentsChannel(@RequestParam long studentId) {

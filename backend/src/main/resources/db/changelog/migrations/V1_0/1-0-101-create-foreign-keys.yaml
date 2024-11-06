@@ -61,13 +61,6 @@ databaseChangeLog:
             referencedTableName: channels
 
         - addForeignKeyConstraint:
-            baseColumnNames: template_id
-            baseTableName: notifications
-            constraintName: FK_NOTIFICATIONS_ON_TEMPLATE
-            referencedColumnNames: id
-            referencedTableName: templates
-
-        - addForeignKeyConstraint:
             baseColumnNames: channel_id
             baseTableName: queues
             constraintName: FK_QUEUES_ON_CHANNEL

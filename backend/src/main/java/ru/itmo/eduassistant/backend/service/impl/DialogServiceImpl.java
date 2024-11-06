@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class DialogService {
+public class DialogServiceImpl {
 
     private final DialogRepository dialogRepository;
     private final MessageRepository messageRepository;

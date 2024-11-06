@@ -15,10 +15,6 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "template_id")
-    private Template template;
-
     private String body;
 
     private LocalDateTime datetime;
