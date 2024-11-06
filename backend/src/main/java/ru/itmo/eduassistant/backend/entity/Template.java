@@ -1,4 +1,4 @@
-package ru.itmo.eduassistant.backend.entity.template;
+package ru.itmo.eduassistant.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

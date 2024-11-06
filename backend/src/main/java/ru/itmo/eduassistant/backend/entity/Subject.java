@@ -1,16 +1,10 @@
-package ru.itmo.eduassistant.backend.entity.subject;
+package ru.itmo.eduassistant.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.itmo.eduassistant.backend.entity.dialog.Dialog;
-import ru.itmo.eduassistant.backend.entity.group.Group;
-import ru.itmo.eduassistant.backend.entity.notification.Notification;
-import ru.itmo.eduassistant.backend.entity.queue.Queue;
-import ru.itmo.eduassistant.backend.entity.user.User;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
