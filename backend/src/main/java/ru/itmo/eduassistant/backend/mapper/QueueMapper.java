@@ -13,6 +13,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QueueMapper {
 
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "expirationDate", target = "expirationDate")
+    @Mapping(source = "queue.subject.name", target = "subjectName")
     QueueResponse toQueueResponse(Queue queue);
 
     List<QueueResponse> toQueueResponseList(List<Queue> queues);
