@@ -1,15 +1,14 @@
 package ru.itmo.eduassistant.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.model.NotificationType;
 import ru.itmo.eduassistant.backend.repository.QueueRepository;
-import ru.itmo.eduassistant.backend.repository.ChannelRepository;
-import ru.itmo.eduassistant.backend.repository.UserRepository;
+import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.QueueService;
+import ru.itmo.eduassistant.backend.service.UserService;
 import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 import ru.itmo.eduassistant.commons.exception.ConflictException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
@@ -21,15 +20,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QueueServiceImpl implements QueueService {
-    private final ChannelRepository channelRepository;
+    private final ChannelService channelService;
     private final QueueRepository queueRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public long createQueue(long channelId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setChannel(channelRepository.findById(channelId).orElseThrow());
+        queue.setChannel(channelService.getChannel(channelId));
         queue.setExpirationDate(expirationDate);
         return queueRepository.save(queue).getId();
     }
@@ -47,8 +46,7 @@ public class QueueServiceImpl implements QueueService {
 
     @Override
     public List<Queue> getAllStudentQueues(long studentId) {
-        User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        User student = userService.getUserByTelegramId(studentId);
         return queueRepository.findByUsers(student);
     }
 
@@ -63,8 +61,7 @@ public class QueueServiceImpl implements QueueService {
     public void addStudentToQueue(long queueId, long studentId) {
         Queue queue = queueRepository.findById(queueId)
                 .orElseThrow(() -> new EntityNotFoundException("Queue not found"));
-        User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        User student = userService.getUserByTelegramId(studentId);
 
         if (queue.getUsers().contains(student)) {
             throw new ConflictException("User already present at queue");
@@ -78,8 +75,7 @@ public class QueueServiceImpl implements QueueService {
     public void removeStudentFromQueue(long queueId, long studentId) {
         Queue queue = queueRepository.findById(queueId)
                 .orElseThrow(() -> new EntityNotFoundException("Queue not found"));
-        User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        User student = userService.getUserByTelegramId(studentId);
 
         queue.getUsers().remove(student);
         queueRepository.save(queue);
@@ -115,7 +111,7 @@ public class QueueServiceImpl implements QueueService {
                             )).toList()
             );
         }
-       return responseBuilder.build();
+        return responseBuilder.build();
     }
 
     public List<User> getAllStudentsInQueue(long queueId) {
