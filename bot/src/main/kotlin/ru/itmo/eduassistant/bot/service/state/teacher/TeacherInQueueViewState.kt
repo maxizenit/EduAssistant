@@ -38,10 +38,11 @@ class TeacherInQueueViewState(
                 ?: return stateSwitcher.switchToLongTimeInactiveState(chatId)
         val queue = eduAssistantClient.getQueue(queueId)
         val studentsInQueue = eduAssistantClient.getAllStudentsInQueue(queueId).allStudents.map { it.fio }
+        var counter = 0
         val message = "\uD83D\uDCAC *Канал:* ${queue.channelName}\n" +
                 "*Название очереди:* ${queue.name}\n\n" +
-                "_Список участников:_" +
-                studentsInQueue.joinToString(separator = "\n")
+                "_Список участников:\n" +
+                studentsInQueue.joinToString(separator = "\n") { (++counter).toString() + ". " + it }
         val sendMessage = SendMessage(chatId.toString(), message)
         sendMessage.enableMarkdown(true)
         sendMessage.replyMarkup = keyboard
