@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Channel;
 import ru.itmo.eduassistant.backend.entity.Notification;
 import ru.itmo.eduassistant.backend.entity.User;
+import ru.itmo.eduassistant.backend.mapper.NotificationMapper;
 import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.UserService;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
-import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.exception.ChannelNotFoundException;
 
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.List;
 public class ChannelServiceImpl implements ChannelService {
     private final UserService userService;
     private final ChannelRepository channelRepository;
+    private final NotificationMapper notificationMapper;
 
     @Override
     public List<Channel> getAllChannelByStudent(long studentId) {
@@ -39,14 +40,12 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public AllNotificationsResponse getAllNotifications(long id, NotificationStatus status) {
+    public AllNotificationsResponse getAllNotifications(long id) {
         Channel channel = getChannel(id);
         List<Notification> notificationList = channel.getNotifications();
 
-        List<NotificationResponse> notificationResponseList = notificationList
-                .stream()
-                .map(notif -> new NotificationResponse(notif.getId(), notif.getBody(), notif.getDatetime()))
-                .toList();
+        List<NotificationResponse> notificationResponseList = notificationList.stream()
+                .map(notificationMapper::toResponse).toList();
 
         return new AllNotificationsResponse(channel.getName(), notificationResponseList);
     }

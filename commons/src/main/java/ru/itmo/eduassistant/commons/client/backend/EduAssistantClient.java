@@ -1,22 +1,23 @@
 package ru.itmo.eduassistant.commons.client.backend;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
 import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
+import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
+import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.*;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationType;
-import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
-import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
-import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 
@@ -73,15 +74,21 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         return this.get("/channel/" + channelId, ChannelResponse.class, Map.of());
     }
 
-    public AllNotificationsResponse getChannelNotifications(Long channel, NotificationStatus status) {
+    public AllNotificationsResponse getChannelNotifications(Long channel) {
         return this.post(String.format("/channel/%s/notifications", channel),
-                AllNotificationsResponse.class, Map.of("status", status), null);
+                AllNotificationsResponse.class, Map.of(), null);
     }
 
     public NotificationResponse createNotification(Long channelId, String text, NotificationType type) {
         return this.post("/notifications", NotificationResponse.class, Map.of(),
                 new CreateNotificationRequest(type, channelId, text));
     }
+
+    public List<NotificationResponse> getAllNotifications(Long telegramId) {
+        return this.get("/notifications", new ParameterizedTypeReference<>() {
+        }, Map.of("telegramId", telegramId));
+    }
+
 
     // Queue
     public Long createQueue(Long channelId, String name, LocalDateTime expirationDate) {

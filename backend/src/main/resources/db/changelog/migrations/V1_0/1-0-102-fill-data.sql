@@ -9,9 +9,7 @@ INSERT INTO channels(name, teacher_id)
 VALUES ('ИЗО', 1),
        ('Физкультура', 2);
 
-INSERT INTO users_to_channel(user_id, channel_id)
-VALUES (1, 1),
-       (2, 2);
+
 
 -- Студенты
 INSERT
@@ -20,6 +18,13 @@ VALUES ('username1', 'STUDENT', 'fio1', 13242),
        ('username2', 'STUDENT', 'fio2', 543434),
        ('username3', 'STUDENT', 'fio3', 113242),
        ('username4', 'STUDENT', 'fio4', 2543434);
+
+INSERT INTO users_to_channel(user_id, channel_id)
+VALUES (3, 1),
+       (3, 2),
+       (4, 1),
+       (5, 2),
+       (6, 2);
 
 -- Диалоги
 INSERT
