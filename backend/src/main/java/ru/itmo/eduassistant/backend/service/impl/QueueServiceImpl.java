@@ -10,6 +10,7 @@ import ru.itmo.eduassistant.backend.repository.QueueRepository;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.QueueService;
 import ru.itmo.eduassistant.backend.service.UserService;
+import ru.itmo.eduassistant.backend.utils.DateTimeUtils;
 import ru.itmo.eduassistant.commons.client.telegram.TelegramMessageClient;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
 import ru.itmo.eduassistant.commons.dto.telegram.SendNotificationRequest;
@@ -18,6 +19,7 @@ import ru.itmo.eduassistant.commons.exception.ConflictException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,7 @@ public class QueueServiceImpl implements QueueService {
                 channel.getUsers().stream().map(User::getTelegramId).toList(),
                 new NotificationResponse(
                         queue.getId(),
-                        NotificationType.QUEUE_OPENED.apply(queue.getName(), expirationDate.toString()),
+                        NotificationType.QUEUE_OPENED.apply(queue.getName(), DateTimeUtils.format(expirationDate)),
                         name,
                         channel.getTeacher().getFio(),
                         LocalDateTime.now()

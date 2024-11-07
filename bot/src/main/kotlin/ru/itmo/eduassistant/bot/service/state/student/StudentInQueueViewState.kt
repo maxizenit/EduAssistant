@@ -30,10 +30,11 @@ class StudentInQueueViewState(
         val queueId = dataCache.getInputDataValue(chatId, currentQueueIdDataType) as Long?
             ?: return stateSwitcher.switchToLongTimeInactiveState(chatId)
         val queue = eduAssistantClient.getQueue(queueId)
-        val messageText = "Канал: ${queue.channelName}\n" +
-                "Название очереди: ${queue.name}\n" +
-                "Список участников:"
+        val messageText = "\uD83D\uDCAC *Канал:* ${queue.channelName}\n" +
+                "*Название очереди:* ${queue.name}\n\n" +
+                "_Список участников:_"
         val message = SendMessage(chatId.toString(), messageText)
+        message.enableMarkdown(true)
         message.replyMarkup = keyboard
         return message
     }
