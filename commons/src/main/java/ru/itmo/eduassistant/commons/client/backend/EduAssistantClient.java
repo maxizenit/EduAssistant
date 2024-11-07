@@ -5,6 +5,9 @@ import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.*;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
+import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
+import ru.itmo.eduassistant.commons.dto.notification.NotificationType;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
@@ -73,6 +76,11 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     public AllNotificationsResponse getChannelNotifications(Long channel, NotificationStatus status) {
         return this.post(String.format("/channel/%s/notifications", channel),
                 AllNotificationsResponse.class, Map.of("status", status), null);
+    }
+
+    public NotificationResponse createNotification(Long channelId, String text, NotificationType type) {
+        return this.post("/notifications", NotificationResponse.class, Map.of(),
+                new CreateNotificationRequest(type, channelId, text));
     }
 
     // Queue

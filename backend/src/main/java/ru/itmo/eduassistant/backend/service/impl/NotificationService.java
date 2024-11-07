@@ -20,13 +20,14 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final ChannelRepository channelRepository;
 
-    public void createNotification(CreateNotificationRequest request) {
+    public Notification createNotification(CreateNotificationRequest request) {
         Notification notification = build(request);
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
     }
 
     private Notification build(CreateNotificationRequest request) {
-        NotificationType type =  NotificationType.valueOf(request.type());
+        //TODO add proper mapper for NotificationType
+        NotificationType type =  NotificationType.valueOf(request.type().name());
         Channel channel = channelRepository.findById(request.channelId())
                 .orElseThrow(() -> new EntityNotFoundException("Channel with id %s not found".formatted(request.channelId())));
 
