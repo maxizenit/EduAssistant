@@ -20,6 +20,9 @@ databaseChangeLog:
               - column:
                   name: teacher_id
                   type: BIGINT
+              - column:
+                  name: description
+                  type: text
             tableName: channels
 
         - createTable:

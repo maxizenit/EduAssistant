@@ -17,6 +17,9 @@ public class Channel {
 
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private User teacher;
