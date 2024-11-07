@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.eduassistant.backend.mapper.ChannelMapper;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
+import ru.itmo.eduassistant.commons.dto.channel.AllStudentsInChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
@@ -64,5 +65,10 @@ public class ChannelController {
     public AllNotificationsResponse getAllNotifications(@PathVariable long id,
                                                         @RequestParam NotificationStatus status) {
         return channelService.getAllNotifications(id, status);
+    }
+
+    @GetMapping("/{id}/students")
+    public AllStudentsInChannelResponse getAllStudents(@PathVariable long id) {
+        return channelService.getAllStudents(id);
     }
 }
