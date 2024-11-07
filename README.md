@@ -48,11 +48,16 @@
 ### Запуск Telegram Bot
 
 Для запуска бота необходимо определить следующие переменные (указаны
-в [application.yaml](src/main/resources/application.yaml)):
+в [application.yaml](bot/src/main/resources/application.yaml)):
 
 * bot.webhook-path - адрес вебхука
 * bot.username - юзернейм бота, выданный [@BotFather](https://t.me/BotFather)
 * bot.token - токен бота, выданный [@BotFather](https://t.me/BotFather)
+
+  И выполнить:
+  ```bash
+  ./gradlew bot:bootRun
+  ```
 
 ## Получение адреса вебхука для локального запуска
 
