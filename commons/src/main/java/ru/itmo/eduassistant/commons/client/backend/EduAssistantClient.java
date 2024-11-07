@@ -15,6 +15,8 @@ import ru.itmo.eduassistant.commons.dto.queue.AllStudentInQueueResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
+import ru.itmo.eduassistant.commons.dto.notification.NotificationType;
+import ru.itmo.eduassistant.commons.dto.queue.*;
 import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
@@ -41,6 +43,10 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
 
     public AllDialogsResponse getDialogs(Long userId) {
         return this.get("/dialog", AllDialogsResponse.class, Map.of("userId", userId));
+    }
+
+    public AllQueuesResponse getQueues() {
+        return this.get("/queue", AllQueuesResponse.class, Map.of());
     }
 
     public AllMessagesResponse getDialog(Long dialogId) {

@@ -23,4 +23,6 @@ public interface QueueService {
     void removeStudentFromQueue(long queueId, long studentId);
     NextUserResponse getNext(long queueId);
     List<User> getAllStudentsInQueue(long queueId);
+
+    List<Queue> getAllQueues();
 }
