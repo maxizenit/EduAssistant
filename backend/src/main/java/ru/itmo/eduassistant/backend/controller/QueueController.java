@@ -1,13 +1,7 @@
 package ru.itmo.eduassistant.backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.mapper.QueueMapper;
 import ru.itmo.eduassistant.backend.mapper.UserMapper;
@@ -30,8 +24,8 @@ public class QueueController {
     private final UserMapper userMapper;
     private final QueueService queueService;
 
-//    TODO мб поменять возвращаемое значение на QueueResponse
-    @PostMapping("/")
+    //    TODO мб поменять возвращаемое значение на QueueResponse
+    @PostMapping
     public long create(@RequestParam long channelId, @RequestParam String name, @RequestParam LocalDateTime expirationDate) {
         return queueService.createQueue(channelId, name, expirationDate);
     }
