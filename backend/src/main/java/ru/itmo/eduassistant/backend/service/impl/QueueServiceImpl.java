@@ -37,9 +37,10 @@ public class QueueServiceImpl implements QueueService {
         queue.setChannel(channel);
         queue.setExpirationDate(expirationDate);
 
-        sendCreateNotifications(name, expirationDate, channel, queue);
+        queue = queueRepository.save(queue);
 
-        return queueRepository.save(queue).getId();
+        sendCreateNotifications(name, expirationDate, channel, queue);
+        return queue.getId();
     }
 
     private void sendCreateNotifications(String name, LocalDateTime expirationDate, Channel channel, Queue queue) {
