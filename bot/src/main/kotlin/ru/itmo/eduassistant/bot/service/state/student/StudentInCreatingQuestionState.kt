@@ -23,7 +23,12 @@ class StudentInCreatingQuestionState(
     private val callbackUtils: CallbackUtils,
     private val dataCache: DataCache,
     private val eduAssistantClient: EduAssistantClient
-) : State(stateSwitcher, keyboardCreator, messageUtils, mapOf(Command.BACK to StudentInMainMenuState::class)) {
+) : State(
+    stateSwitcher, keyboardCreator, messageUtils, mapOf(
+        Command.BACK to StudentInMainMenuState::class,
+        Command.MAIN_MENU to StudentInMainMenuState::class
+    )
+) {
 
     private final val currentChannelIdDataType = DataType.STUDENT_IN_CREATING_QUESTION_VIEW_CURRENT_CHANNEL_ID
 
@@ -37,7 +42,7 @@ class StudentInCreatingQuestionState(
 
     override fun handleMessage(message: Message): BotApiMethod<*> {
         val command = Command.parseCommand(message.text)
-        if (Command.START == command || Command.BACK == command) {
+        if (Command.START == command || Command.BACK == command || Command.MAIN_MENU == command) {
             return super.handleMessage(message)
         }
         val chatId = message.chatId

@@ -20,8 +20,11 @@ class MessageController(
     @PostMapping
     fun receiveMessage(@RequestBody request: SendNotificationRequest): ResponseEntity<*> {
         request.recipientIds.forEach {
-            val chatId = chatService.getChatIdByUserId(it)
-            messageUtils.sendMessage(SendMessage(chatId.toString(), request.notification.text))
+            try {
+                val chatId = chatService.getChatIdByUserId(it)
+                messageUtils.sendMessage(SendMessage(chatId.toString(), request.notification.text))
+            } catch (_: Exception) {
+            }
         }
 
         return ResponseEntity.ok(null)
