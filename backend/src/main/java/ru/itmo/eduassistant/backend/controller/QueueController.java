@@ -6,10 +6,7 @@ import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.mapper.QueueMapper;
 import ru.itmo.eduassistant.backend.mapper.UserMapper;
 import ru.itmo.eduassistant.backend.service.QueueService;
-import ru.itmo.eduassistant.commons.dto.queue.AllStudentInQueueResponse;
-import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
-import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
-import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
+import ru.itmo.eduassistant.commons.dto.queue.*;
 import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 
 import java.time.LocalDateTime;
@@ -73,5 +70,13 @@ public class QueueController {
     @GetMapping("/{id}/student/next")
     public NextUserResponse getCurrentStudent(@PathVariable long id) {
         return queueService.getNext(id);
+    }
+
+    @GetMapping
+    public AllQueuesResponse getAllQueues() {
+        return new AllQueuesResponse(queueMapper
+                .toQueueResponseList(queueService
+                        .getAllQueues())
+        );
     }
 }

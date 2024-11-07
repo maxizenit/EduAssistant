@@ -174,4 +174,9 @@ public class QueueServiceImpl implements QueueService {
                 .orElseThrow(() -> new EntityNotFoundException("Queue not found"));
         return queue.getUsers();
     }
+
+    @Override
+    public List<Queue> getAllQueues() {
+        return queueRepository.findAll();
+    }
 }
