@@ -122,6 +122,9 @@ databaseChangeLog:
               - column:
                   name: channel_id
                   type: BIGINT
+              - column:
+                  name: position
+                  type: BIGINT
             tableName: queues
 
         - createTable:
