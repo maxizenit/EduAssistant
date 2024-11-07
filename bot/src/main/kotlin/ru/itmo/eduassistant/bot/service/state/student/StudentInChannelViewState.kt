@@ -40,7 +40,6 @@ class StudentInChannelViewState(
                 "*Описание:* ${channel.description}\n"
         val message = SendMessage(chatId.toString(), messageText)
         message.parseMode = "MarkdownV2"
-        message.enableMarkdown(true)
         message.replyMarkup = keyboard
         return message
     }
