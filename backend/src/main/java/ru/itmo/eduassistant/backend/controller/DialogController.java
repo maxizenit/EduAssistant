@@ -37,4 +37,9 @@ public class DialogController {
     public void markAsDiscussed(@RequestParam Long dialogId) {
         dialogService.markAsDiscussed(dialogId);
     }
+
+    @GetMapping("/{id}")
+    public QuestionResponse getDialog(@PathVariable Long id) {
+        return dialogMapper.toQuestionResponse(dialogService.getDialog(id));
+    }
 }

@@ -44,6 +44,10 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         return this.get("/dialog", AllDialogsResponse.class, Map.of("userId", userId));
     }
 
+    public QuestionResponse getDialog(Long dialogId) {
+        return this.get(String.format("/dialog/%s", dialogId), QuestionResponse.class, Map.of());
+    }
+
     public MessageResponse addMessageToDialog(Long userId, String text, Long dialogId) {
         return this.post("/dialog", MessageResponse.class, Map.of(), new NewMessageRequest(userId, text, dialogId));
     }
