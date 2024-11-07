@@ -59,4 +59,8 @@ public class NotificationService {
                 notificationRepository.findStudentNotificationsByTelegramId(telegramId) :
                 notificationRepository.findTeacherNotificationsByTelegramId(telegramId);
     }
+
+    public void saveNotification(Notification notification) {
+        notificationRepository.save(notification);
+    }
 }

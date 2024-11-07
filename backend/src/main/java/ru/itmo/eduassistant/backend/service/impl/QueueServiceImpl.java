@@ -3,6 +3,7 @@ package ru.itmo.eduassistant.backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Channel;
+import ru.itmo.eduassistant.backend.entity.Notification;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.model.NotificationType;
@@ -19,7 +20,6 @@ import ru.itmo.eduassistant.commons.exception.ConflictException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +29,7 @@ public class QueueServiceImpl implements QueueService {
     private final ChannelService channelService;
     private final QueueRepository queueRepository;
     private final UserService userService;
+    private final NotificationService notificationService;
     private final TelegramMessageClient telegramMessageClient;
 
     @Override
@@ -42,20 +43,28 @@ public class QueueServiceImpl implements QueueService {
         queue = queueRepository.save(queue);
 
         sendCreateNotifications(name, expirationDate, channel, queue);
+
         return queue.getId();
     }
 
     private void sendCreateNotifications(String name, LocalDateTime expirationDate, Channel channel, Queue queue) {
+        NotificationResponse response = new NotificationResponse(
+                queue.getId(),
+                NotificationType.QUEUE_OPENED.apply(queue.getName(), DateTimeUtils.format(expirationDate)),
+                name,
+                channel.getTeacher().getFio(),
+                LocalDateTime.now()
+        );
         telegramMessageClient.postNotifications(new SendNotificationRequest(
                 channel.getUsers().stream().map(User::getTelegramId).toList(),
-                new NotificationResponse(
-                        queue.getId(),
-                        NotificationType.QUEUE_OPENED.apply(queue.getName(), DateTimeUtils.format(expirationDate)),
-                        name,
-                        channel.getTeacher().getFio(),
-                        LocalDateTime.now()
-                )
+                response
         ));
+        notificationService.saveNotification(Notification.builder()
+                .body(response.text())
+                .datetime(expirationDate)
+                .isArchived(false)
+                .channel(channel)
+                .build());
     }
 
     @Override
