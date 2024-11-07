@@ -15,16 +15,16 @@
 Проект был разработан в рамках хакатона ИТМО ИПКН DevDays Fall 5 - 8 ноября 2024.
 Участники проекта:
 
-- @vevasilev - TeamLead 
-- @alefunt - bot development 
-- @maxizenit - bot development 
-- @timofeyreedtz - backend development 
-- @romankuryshev - backend development
+- [@vevasilev](https://github.com/vevasilev) - TeamLead 
+- [@alefunt](https://github.com/alefunt) - bot development 
+- [@maxizenit](https://github.com/maxizenit) - bot development 
+- [@timofeyreedtz](https://github.com/timofeyreedtz) - backend development 
+- [@romankuryshev](https://github.com/romankuryshev) - backend development
 
 ## Структура приложения
 
 1. **Telegram Bot**
-    - Разработан с использованием Kotlin и библиотеки для создания Telegram-ботов.
+    - Разработан с использованием Kotlin и [Telegram Bot Java Library](https://github.com/rubenlagus/TelegramBots)
     - Обрабатывает команды студентов, взаимодействует с сервером через API и отправляет уведомления.
 
 2. **Backend**
