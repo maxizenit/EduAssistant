@@ -4,3 +4,13 @@ spring:
 
 server:
   port: 8081
+
+bot:
+  api-url: https://api.telegram.org
+  webhook-path: webhook_path
+  backend-url: http://localhost:8080
+  username: EduAssistant_DevDays_bot
+  token: token
+
+cache:
+  expiration-time: 1d
