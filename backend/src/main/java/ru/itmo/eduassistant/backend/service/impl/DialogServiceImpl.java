@@ -22,6 +22,7 @@ import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -99,11 +100,15 @@ public class DialogServiceImpl {
     }
 
     private Message buildMessage(NewMessageRequest request, Dialog dialog) {
+        User user = userService.getUserByTelegramId(request.userId());
+        User recipient = Objects.equals(user.getId(), dialog.getAuthor().getId())
+                ? dialog.getRecipient()
+                : dialog.getAuthor();
         return messageRepository.save(Message.builder()
                 .body(request.text())
                 .datetime(LocalDateTime.now())
-                .author(dialog.getAuthor())
-                .recipient(dialog.getRecipient())
+                .author(user)
+                .recipient(recipient)
                 .dialog(dialog).build()
         );
     }
