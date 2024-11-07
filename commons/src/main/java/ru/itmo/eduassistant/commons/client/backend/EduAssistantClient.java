@@ -62,8 +62,8 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     // Channel
-    public ChannelResponse createChannel(Long teacherId, String name) {
-        return this.post("/channel", ChannelResponse.class, Map.of(), new CreateChannelRequest(teacherId, name));
+    public ChannelResponse createChannel(Long teacherId, String name, String description) {
+        return this.post("/channel", ChannelResponse.class, Map.of(), new CreateChannelRequest(teacherId, name, description));
     }
 
     public void addUserToChannel(Long channelId, Long telegramId) {
