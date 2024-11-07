@@ -9,10 +9,13 @@ import ru.itmo.eduassistant.backend.mapper.NotificationMapper;
 import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.UserService;
+import ru.itmo.eduassistant.commons.dto.channel.AllStudentsInChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
+import ru.itmo.eduassistant.commons.dto.channel.StudentInChannelResponse;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
 import ru.itmo.eduassistant.commons.exception.ChannelNotFoundException;
+import ru.itmo.eduassistant.commons.exception.ConflictException;
 
 import java.util.List;
 
@@ -69,6 +72,8 @@ public class ChannelServiceImpl implements ChannelService {
                 .noneMatch(filteredUser -> filteredUser.getTelegramId() == telegramUserId)) {
             channel.getUsers().add(user);
             channelRepository.save(channel);
+        } else {
+            throw new ConflictException("Such user already exists in channel");
         }
 
     }
@@ -84,6 +89,21 @@ public class ChannelServiceImpl implements ChannelService {
                 .anyMatch(filteredUser -> filteredUser.getTelegramId() == telegramUserId)) {
             channel.getUsers().remove(user);
             channelRepository.save(channel);
+        } else {
+            throw new ConflictException("There is no such user in channel");
         }
+    }
+
+    @Override
+    public AllStudentsInChannelResponse getAllStudents(long id) {
+        Channel channel = getChannel(id);
+
+        List<StudentInChannelResponse> students = channel.getUsers()
+                .stream()
+                .map(User::getFio)
+                .map(StudentInChannelResponse::new)
+                .toList();
+
+        return new AllStudentsInChannelResponse(students);
     }
 }

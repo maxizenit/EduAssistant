@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.mapper.QueueMapper;
+import ru.itmo.eduassistant.backend.mapper.UserMapper;
 import ru.itmo.eduassistant.backend.service.QueueService;
+import ru.itmo.eduassistant.commons.dto.queue.AllStudentInQueueResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
+import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
 public class QueueController {
 
     private final QueueMapper queueMapper;
+    private final UserMapper userMapper;
     private final QueueService queueService;
 
 //    TODO мб поменять возвращаемое значение на QueueResponse
@@ -65,5 +69,15 @@ public class QueueController {
     @DeleteMapping("/{id}/students/{studentId}")
     public void deleteStudentFromQueue(@PathVariable long id, @PathVariable long studentId) {
         queueService.removeStudentFromQueue(id, studentId);
+    }
+
+    @GetMapping("/{id}/students")
+    public AllStudentInQueueResponse getAllStudentsInQueue(@PathVariable long id) {
+        return userMapper.toResponse(queueService.getAllStudentsInQueue(id));
+    }
+
+    @GetMapping("/{id}/student/next")
+    public NextUserResponse getCurrentStudent(@PathVariable long id) {
+        return queueService.getNext(id);
     }
 }
