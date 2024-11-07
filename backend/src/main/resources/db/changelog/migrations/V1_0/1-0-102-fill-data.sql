@@ -39,10 +39,10 @@ VALUES (false, 3, 'Прив, че дел?', null, 1),
 INSERT
 INTO messages(body, datetime, author_id, recipient_id, dialog_id)
 VALUES ('Прив, че дел?', dateadd(hour, -3, NOW()), 3, 1, 1),
-       ('Отвянь!', dateadd(hour, -2, NOW()), 1, 3, 1),
+       ('В каком формате сдавать задание?', dateadd(hour, -2, NOW()), 1, 3, 1),
        ('А что если нет?', dateadd(hour, -1, NOW()), 3, 1, 1),
        ('Дай списать домашку?', dateadd(hour, -5, NOW()), 4, 2, 2),
-       ('Пакетик брать будете?', dateadd(hour, -3, NOW()), 2, 4, 2),
+       ('Сдаем через github', dateadd(hour, -3, NOW()), 2, 4, 2),
        ('Спасибо! ♥', dateadd(hour, -1, NOW()), 4, 2, 2);
 
 -- Уведомления
