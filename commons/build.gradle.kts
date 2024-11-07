@@ -1,5 +1,6 @@
 plugins {
     java
+    id("io.freefair.lombok") version "8.10.2"
 }
 
 group = "ru.itmo.eduassistant"
