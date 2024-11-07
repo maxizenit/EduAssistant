@@ -44,7 +44,7 @@ class TeacherInCreatingChannelNotificationState(
         val chatId = message.chatId
         val channelId = dataCache.getInputDataValue(chatId, currentChannelIdDataType) as Long?
             ?: return stateSwitcher.switchToLongTimeInactiveState(chatId)
-        eduAssistantClient.createNotification(chatId, message.text)
+        eduAssistantClient.createNotification(channelId, message.text)
         return SendMessage(chatId.toString(), "Уведомление создано!")
     }
 }
