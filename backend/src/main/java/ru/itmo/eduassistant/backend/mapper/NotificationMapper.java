@@ -11,5 +11,7 @@ public interface NotificationMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "body", target = "text")
     @Mapping(source = "datetime", target = "dateTime")
+    @Mapping(source = "channel.name", target = "channelName")
+    @Mapping(source = "channel.teacher.fio", target = "authorName")
     NotificationResponse toResponse(Notification notification);
 }

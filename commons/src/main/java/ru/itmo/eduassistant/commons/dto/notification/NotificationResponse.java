@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 public record NotificationResponse(
         long id,
         String text,
+        String channelName,
+        String authorName,
+
         LocalDateTime dateTime
 ) {
 }
