@@ -35,11 +35,11 @@ class StudentInChannelViewState(
         val channelId = dataCache.getInputDataValue(chatId, currentChannelIdDataType) as Long?
             ?: return stateSwitcher.switchToLongTimeInactiveState(chatId)
         val channel = eduAssistantClient.getChannel(channelId)
-        val messageText = "*Название:* ${channel.name}\n" +
-                "*Преподаватель:* ${channel.teacherName}\n" +
-                "*Описание:* ${channel.description}\n"
+        val messageText = "✏\uFE0F *Название:* ${channel.name}\n" +
+                "\uD83D\uDC64 *Преподаватель:* ${channel.teacherName}\n" +
+                "\uD83D\uDDD2 *Описание:* ${channel.description}\n"
         val message = SendMessage(chatId.toString(), messageText)
-        message.parseMode = "MarkdownV2"
+        message.enableMarkdown(true)
         message.replyMarkup = keyboard
         return message
     }
