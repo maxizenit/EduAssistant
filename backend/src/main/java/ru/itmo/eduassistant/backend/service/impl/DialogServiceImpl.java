@@ -13,7 +13,6 @@ import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.UserService;
 import ru.itmo.eduassistant.commons.dto.dialog.NewMessageRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.NewQuestionRequest;
-import ru.itmo.eduassistant.commons.exception.DialogNotFoundException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 import java.time.LocalDateTime;
@@ -29,8 +28,7 @@ public class DialogServiceImpl {
     private final UserService userService;
 
     public Message addMessage(NewMessageRequest newMessageRequest) {
-        Dialog dialog = dialogRepository.findById(newMessageRequest.dialogId())
-                .orElseThrow(() -> new EntityNotFoundException("Dialog with id %s not found".formatted(newMessageRequest.dialogId())));
+        Dialog dialog = getDialog(newMessageRequest.dialogId());
         Message newMessage = buildMessage(newMessageRequest, dialog);
 
         dialog.getMessages().add(newMessage);
@@ -66,8 +64,7 @@ public class DialogServiceImpl {
     }
 
     public void markAsDiscussed(long dialogId) {
-        Dialog dialog = dialogRepository.findById(dialogId).orElseThrow(() ->
-                new DialogNotFoundException("Dialog with id %s not found".formatted(dialogId)));
+        Dialog dialog = getDialog(dialogId);
         dialog.setIsClosed(true);
         dialogRepository.save(dialog);
     }
@@ -80,5 +77,11 @@ public class DialogServiceImpl {
                 .recipient(dialog.getRecipient())
                 .dialog(dialog).build()
         );
+    }
+
+    public Dialog getDialog(Long id) {
+        return dialogRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Dialog with id %s not found".formatted(id)));
     }
 }
