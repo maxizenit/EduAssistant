@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
 import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
 import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
+import ru.itmo.eduassistant.commons.dto.channel.AllStudentsInChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.*;
@@ -11,9 +12,11 @@ import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
 import ru.itmo.eduassistant.commons.dto.notification.NotificationType;
+import ru.itmo.eduassistant.commons.dto.queue.AllStudentInQueueResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllStudentQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.AllTeacherQueuesResponse;
 import ru.itmo.eduassistant.commons.dto.queue.QueueResponse;
+import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 import ru.itmo.eduassistant.commons.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
@@ -89,6 +92,10 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         }, Map.of("telegramId", telegramId));
     }
 
+    public AllStudentsInChannelResponse getChannelSubscribers(Long channelId) {
+        return this.get("/channel/%s/students".formatted(channelId), AllStudentsInChannelResponse.class, Map.of());
+    }
+
 
     // Queue
     public Long createQueue(Long channelId, String name, LocalDateTime expirationDate) {
@@ -118,5 +125,13 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
 
     public void deleteStudentFromQueue(Long queueId, Long studentId) {
         this.delete(String.format("/queue/%s/students/%s", queueId, studentId), Map.of(), null);
+    }
+
+    public AllStudentInQueueResponse getAllStudentsInQueue(Long queueId) {
+        return this.get("/queue/%s/students".formatted(queueId), AllStudentInQueueResponse.class, Map.of());
+    }
+
+    public NextUserResponse getCurrentStudentInQueue(Long queueId) {
+        return this.get("/queue/%s/student/next".formatted(queueId), NextUserResponse.class, Map.of());
     }
 }
