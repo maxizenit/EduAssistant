@@ -9,7 +9,6 @@ import ru.itmo.eduassistant.commons.dto.channel.AllStudentsInChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
 import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
-import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 
 import java.util.List;
 
@@ -62,9 +61,8 @@ public class ChannelController {
     }
 
     @GetMapping("/{id}/notifications")
-    public AllNotificationsResponse getAllNotifications(@PathVariable long id,
-                                                        @RequestParam NotificationStatus status) {
-        return channelService.getAllNotifications(id, status);
+    public AllNotificationsResponse getAllNotifications(@PathVariable long id) {
+        return channelService.getAllNotifications(id);
     }
 
     @GetMapping("/{id}/students")
