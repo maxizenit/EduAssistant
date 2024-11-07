@@ -44,7 +44,7 @@ class TeacherInMainMenuState(
         val userId = chatService.getChatIdByUserId(chatId)
 
         val notifications = try {
-            eduAssistantClient.getAllNotifications(userId).map { it.channelName + ": " + it.text }
+            eduAssistantClient.getAllNotifications(userId).map {"_" + it.channelName + ":_\n " + it.text }
                 .joinToString(separator = "\n----------\n")
         } catch (_: Exception) {
             null
@@ -53,9 +53,10 @@ class TeacherInMainMenuState(
         val messageText = if (notifications == null) {
             "У вас нет уведомлений"
         } else {
-            "Ваши уведомления:\n$notifications"
+            "\uD83D\uDD09 *Ваши уведомления*:\n$notifications"
         }
         val answer = SendMessage(chatId.toString(), messageText)
+        answer.enableMarkdown(true)
         answer.replyMarkup = keyboard
         return answer
     }
