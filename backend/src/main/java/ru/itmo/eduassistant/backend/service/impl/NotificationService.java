@@ -43,9 +43,8 @@ public class NotificationService {
         Channel channel = channelRepository.findById(request.channelId())
                 .orElseThrow(() -> new EntityNotFoundException("Channel with id %s not found".formatted(request.channelId())));
 
-        NotificationType type = NotificationType.ANNOUNCEMENT;
         return Notification.builder()
-                .body(type.apply(channel.getName(), request.text()))
+                .body(NotificationType.ANNOUNCEMENT.apply(request.text()))
                 .datetime(LocalDateTime.now())
                 .channel(channel)
                 .isArchived(false)

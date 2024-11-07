@@ -164,12 +164,12 @@ public class QueueServiceImpl implements QueueService {
         if (current != null) {
             responseBuilder.current(
                     new NextUserResponse.User(current.getTelegramId(), current.getFio()));
-            responseBuilder.messageForCurrent(NotificationType.YOUR_TURN.apply(queue.getName()));
+            responseBuilder.messageForCurrent(NotificationType.YOUR_TURN.getTemplate());
         }
         if (!users.isEmpty()) {
             responseBuilder.next(
                     new NextUserResponse.User(users.get(0).getTelegramId(), users.get(0).getFio()));
-            responseBuilder.messageForNext(NotificationType.YOUR_TURN_NEXT.apply(queue.getName()));
+            responseBuilder.messageForNext(NotificationType.YOUR_TURN_NEXT.getTemplate());
             responseBuilder.queue(
                     users.stream()
                             .map(user -> new NextUserResponse.User(
