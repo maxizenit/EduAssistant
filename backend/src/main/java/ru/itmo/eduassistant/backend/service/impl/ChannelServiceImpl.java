@@ -55,9 +55,14 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel createChannel(CreateChannelRequest createChannelRequest) {
+        if (channelRepository.findChannelByName(createChannelRequest.name()).isPresent()) {
+            throw new ConflictException("Канал с таким названием уже существует");
+        }
+
         Channel channel = new Channel();
         channel.setTeacher(userService.getUserByTelegramId(createChannelRequest.teacherId()));
         channel.setName(createChannelRequest.name());
+        channel.setDescription(createChannelRequest.description());
         return channelRepository.save(channel);
     }
 

@@ -39,7 +39,7 @@ class TeacherInCreatingChannelState(
         val chatId = message.chatId
         val userId = chatService.getUserIdByChatId(chatId)
         val name = message.text
-        val channelId = eduAssistantClient.createChannel(userId, name).id
+        val channelId = eduAssistantClient.createChannel(userId, name, "Описание").id // TODO set description
         messageUtils.sendMessage(SendMessage(chatId.toString(), "Канал успешно создан!"))
         dataCache.putInputDataValue(chatId, DataType.TEACHER_IN_CHANNEL_VIEW_STATE_CURRENT_CHANNEL_ID, channelId)
         return stateSwitcher.switchState(
