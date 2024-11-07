@@ -7,10 +7,10 @@ import ru.itmo.eduassistant.backend.entity.Dialog;
 import ru.itmo.eduassistant.backend.entity.Message;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.model.UserRole;
-import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.repository.DialogRepository;
 import ru.itmo.eduassistant.backend.repository.MessageRepository;
-import ru.itmo.eduassistant.backend.repository.UserRepository;
+import ru.itmo.eduassistant.backend.service.ChannelService;
+import ru.itmo.eduassistant.backend.service.UserService;
 import ru.itmo.eduassistant.commons.dto.dialog.NewMessageRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.NewQuestionRequest;
 import ru.itmo.eduassistant.commons.exception.DialogNotFoundException;
@@ -23,11 +23,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DialogServiceImpl {
-
     private final DialogRepository dialogRepository;
     private final MessageRepository messageRepository;
-    private final ChannelRepository channelRepository;
-    private final UserRepository userRepository;
+    private final ChannelService channelService;
+    private final UserService userService;
 
     public Message addMessage(NewMessageRequest newMessageRequest) {
         Dialog dialog = dialogRepository.findById(newMessageRequest.dialogId())
@@ -39,11 +38,8 @@ public class DialogServiceImpl {
     }
 
     public Message createQuestion(NewQuestionRequest request) {
-        Channel channel = channelRepository.getReferenceById(request.channelId());
-        User author = userRepository.findById(request.studentId())
-                .orElseThrow(() ->
-                        new EntityNotFoundException("User with id %s not found".formatted(request.studentId())));
-
+        Channel channel = channelService.getChannel(request.channelId());
+        User author = userService.getUserByTelegramId(request.studentId());
 
         Message message = new Message();
         message.setAuthor(author);
@@ -65,9 +61,7 @@ public class DialogServiceImpl {
     }
 
     public List<Dialog> getAllQuestions(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException("User with id %s not found".formatted(userId))
-        );
+        User user = userService.getUserByTelegramId(userId);
         return user.getRole() == UserRole.STUDENT ? user.getAuthoredDialogs() : user.getReceivedDialogs();
     }
 

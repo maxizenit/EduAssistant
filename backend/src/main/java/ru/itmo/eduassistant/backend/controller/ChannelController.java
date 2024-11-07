@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.eduassistant.backend.mapper.ChannelMapper;
 import ru.itmo.eduassistant.backend.service.ChannelService;
-import ru.itmo.eduassistant.backend.service.impl.NotificationService;
-import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
-import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
-import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 import ru.itmo.eduassistant.commons.dto.channel.AllChannelsResponse;
 import ru.itmo.eduassistant.commons.dto.channel.ChannelResponse;
+import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
+import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
+import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
 
 import java.util.List;
 
@@ -19,12 +18,26 @@ import java.util.List;
 public class ChannelController {
 
     private final ChannelMapper channelMapper;
-    private final ChannelService service;
-    private final NotificationService notificationService;
+    private final ChannelService channelService;
+
+    @PostMapping
+    public void createChannel(@RequestBody CreateChannelRequest createChannelRequest) {
+        channelService.createChannel(createChannelRequest);
+    }
+
+    @PostMapping("/{channelId}/user/{telegramUserId}")
+    public void addUserToChannel(@PathVariable long channelId, @PathVariable long telegramUserId) {
+        channelService.addUserToChannel(channelId, telegramUserId);
+    }
+
+    @DeleteMapping("/{channelId}/user/{telegramUserId}")
+    public void deleteUserFromChannel(@PathVariable long channelId, @PathVariable long telegramUserId) {
+        channelService.deleteUserFromChannel(channelId, telegramUserId);
+    }
 
     @GetMapping
     public AllChannelsResponse getAllStudentsChannel(@RequestParam long studentId) {
-        List<ChannelResponse> response = service.getAllChannelByStudent(studentId)
+        List<ChannelResponse> response = channelService.getAllChannelByStudent(studentId)
                 .stream()
                 .map(channelMapper::toResponse)
                 .toList();
@@ -34,7 +47,7 @@ public class ChannelController {
 
     @GetMapping("/teacher/{teacherId}")
     public AllChannelsResponse getAllTeachersChannel(@PathVariable long teacherId) {
-        List<ChannelResponse> response = service.getAllTeachersChannel(teacherId)
+        List<ChannelResponse> response = channelService.getAllTeachersChannel(teacherId)
                 .stream()
                 .map(channelMapper::toResponse)
                 .toList();
@@ -44,17 +57,12 @@ public class ChannelController {
 
     @GetMapping("/{id}")
     public ChannelResponse getChannel(@PathVariable long id) {
-        return channelMapper.toResponse(service.getChannel(id));
+        return channelMapper.toResponse(channelService.getChannel(id));
     }
 
     @GetMapping("/{id}/notifications")
     public AllNotificationsResponse getAllNotifications(@PathVariable long id,
                                                         @RequestParam NotificationStatus status) {
-        return service.getAllNotifications(id, status);
-    }
-
-    @PostMapping("/notifications")
-    public void createNotification(@RequestBody CreateNotificationRequest createNotificationRequest) {
-        notificationService.createNotification(createNotificationRequest);
+        return channelService.getAllNotifications(id, status);
     }
 }
