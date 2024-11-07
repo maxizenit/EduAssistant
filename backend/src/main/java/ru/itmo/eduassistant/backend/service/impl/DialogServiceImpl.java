@@ -42,7 +42,7 @@ public class DialogServiceImpl {
                 List.of(newMessage.getRecipient().getTelegramId()),
                 new NotificationResponse(
                         dialog.getId(),
-                        NotificationType.NEW_MESSAGE.apply(dialog.getChannel().getName(), newMessage.getAuthor().getFio()),
+                        NotificationType.NEW_MESSAGE.apply(newMessage.getAuthor().getFio()),
                         dialog.getChannel().getName(),
                         dialog.getAuthor().getFio(),
                         newMessage.getDatetime()
@@ -77,7 +77,7 @@ public class DialogServiceImpl {
                 List.of(message.getRecipient().getTelegramId()),
                 new NotificationResponse(
                         dialog.getId(),
-                        NotificationType.NEW_QUESTION.apply(dialog.getChannel().getName(), message.getAuthor().getFio()),
+                        NotificationType.NEW_QUESTION.apply(message.getAuthor().getFio()),
                         dialog.getChannel().getName(),
                         dialog.getAuthor().getFio(),
                         message.getDatetime()
