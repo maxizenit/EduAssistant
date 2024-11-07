@@ -33,7 +33,7 @@ public class NotificationService {
     public Notification createNotification(CreateNotificationRequest request) {
         Notification notification = notificationRepository.save(build(request));
 
-        List<Long> telegramIds = notification.getChannel().getUsers().stream().map(User::getId).toList();
+        List<Long> telegramIds = notification.getChannel().getUsers().stream().map(User::getTelegramId).toList();
         telegramMessageClient.postNotifications(new SendNotificationRequest(telegramIds, mapper.toResponse(notification)));
 
         return notification;
