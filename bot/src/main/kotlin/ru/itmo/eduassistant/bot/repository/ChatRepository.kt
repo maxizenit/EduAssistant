@@ -7,7 +7,7 @@ interface ChatRepository : CrudRepository<Chat, Long> {
 
     fun existsByUserId(userId: Long): Boolean
 
-    fun findByUserId(userId: Long): Chat
+    fun findByUserId(userId: Long): Chat?
 
     fun deleteChatsByUserId(userId: Long)
 }

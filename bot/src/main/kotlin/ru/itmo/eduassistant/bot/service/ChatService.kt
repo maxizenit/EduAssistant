@@ -20,6 +20,6 @@ class ChatService(private val chatRepository: ChatRepository) {
     }
 
     fun getChatIdByUserId(userId: Long): Long {
-        return chatRepository.findByUserId(userId).id
+        return chatRepository.findByUserId(userId)?.id ?: throw NullPointerException()
     }
 }

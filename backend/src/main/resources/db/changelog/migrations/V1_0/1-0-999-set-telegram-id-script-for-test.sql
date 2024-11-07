@@ -1,2 +1,2 @@
---UPDATE users SET telegram_id = 123 WHERE username = 'teacher1'
---UPDATE users SET telegram_id = 123 WHERE username = 'username1'
+--UPDATE users SET telegram_id = 123 WHERE username = 'ivan_ivanov';
+--UPDATE users SET telegram_id = 123 WHERE username = 'alexey_smirnov';

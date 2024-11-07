@@ -39,23 +39,25 @@ class TeacherInMainMenuState(
         return super.handleMessage(message)
     }
 
-    //todo: предусмотреть клавиатуру с вперёд-назад
     private fun handleNotifications(message: Message): BotApiMethod<*> {
         val chatId = message.chatId
         val userId = chatService.getChatIdByUserId(chatId)
 
-        //val initMessage = SendMessage(chatId.toString(), "Выберите вопрос")
-        //initMessage.replyMarkup = keyboard
-        //messageSender.sendMessage(initMessage)
+        val notifications = try {
+            eduAssistantClient.getAllNotifications(userId).map { it.channelName + ": " + it.text }
+                .joinToString(separator = "\n----------\n")
+        } catch (_: Exception) {
+            null
+        }
 
-        val inlineKeyboard =
-            keyboardCreator.createInlineKeyboardMarkup(
-                emptyMap(),//todo: список очередей
-                CallbackType.STUDENT_IN_MAIN_MENU_STATE_QUEUE_CHOICE, userId//todo: другой колбэк
-            )
-        val subjectsMessage = SendMessage(chatId.toString(), "Выберите очередь:")
-        subjectsMessage.replyMarkup = inlineKeyboard
-        return subjectsMessage
+        val messageText = if (notifications == null) {
+            "У вас нет уведомлений"
+        } else {
+            "Ваши уведомления:\n$notifications"
+        }
+        val answer = SendMessage(chatId.toString(), messageText)
+        answer.replyMarkup = keyboard
+        return answer
     }
 
     private fun handleQuestions(message: Message): BotApiMethod<*> {
@@ -74,7 +76,7 @@ class TeacherInMainMenuState(
                 textDataMap,
                 CallbackType.TEACHER_IN_MAIN_MENU_STATE_QUESTION_CHOICE, userId
             )
-        val answer = SendMessage(chatId.toString(), "Вопросы к Вам:")
+        val answer = SendMessage(chatId.toString(), "Ваши диалоги:")
         answer.replyMarkup = inlineKeyboard
         return answer
     }

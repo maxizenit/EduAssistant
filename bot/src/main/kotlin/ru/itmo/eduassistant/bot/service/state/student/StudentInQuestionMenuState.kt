@@ -41,7 +41,7 @@ class StudentInQuestionMenuState(
                 textDataMap,
                 CallbackType.STUDENT_IN_QUESTION_MENU_STATE_QUESTION_CHOICE, userId
             )
-        val answer = SendMessage(chatId.toString(), "Вопросы к Вам:")
+        val answer = SendMessage(chatId.toString(), "Ваши диалоги:")
         answer.replyMarkup = inlineKeyboard
         return answer
     }
@@ -51,7 +51,6 @@ class StudentInQuestionMenuState(
         if (Command.ASK != command) {
             return super.handleMessage(message)
         }
-
         return handleChannels(message)
     }
 
