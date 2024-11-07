@@ -2,6 +2,7 @@ package ru.itmo.eduassistant.commons.client.backend;
 
 import org.springframework.web.client.RestTemplate;
 import ru.itmo.eduassistant.commons.client.AbstractControllerHttpClient;
+import ru.itmo.eduassistant.commons.dto.channel.CreateChannelRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.*;
 import ru.itmo.eduassistant.commons.dto.notification.AllNotificationsResponse;
 import ru.itmo.eduassistant.commons.dto.notofication.NotificationStatus;
@@ -36,7 +37,7 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
         return this.get("/dialog", AllDialogsResponse.class, Map.of("userId", userId));
     }
 
-    public MessageResponse addMessageToDialog(Long userId, String text, Long dialogId){
+    public MessageResponse addMessageToDialog(Long userId, String text, Long dialogId) {
         return this.post("/dialog", MessageResponse.class, Map.of(), new NewMessageRequest(userId, text, dialogId));
     }
 
@@ -45,6 +46,18 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     }
 
     // Channel
+    public ChannelResponse createChannel(Long teacherId, String name) {
+        return this.post("/channel", ChannelResponse.class, Map.of(), new CreateChannelRequest(teacherId, name));
+    }
+
+    public void addUserToChannel(Long channelId, Long telegramId) {
+        this.post(String.format("/channel/%s/user/%s", channelId, telegramId), void.class, Map.of(), null);
+    }
+
+    public void deleteUserFromChannel(Long channelId, Long telegramId) {
+        this.delete(String.format("/channel/%s/user/%s", channelId, telegramId), Map.of(), null);
+    }
+
     public AllChannelsResponse getStudentChannels(Long studentId) {
         return this.get("/channel", AllChannelsResponse.class, Map.of("studentId", studentId));
     }
@@ -52,13 +65,11 @@ public class EduAssistantClient extends AbstractControllerHttpClient {
     public AllChannelsResponse getTeacherChannels(Long teacherId) {
         return this.get("/channel/teacher/" + teacherId, AllChannelsResponse.class, Map.of());
     }
+
     public ChannelResponse getChannel(Long channelId) {
         return this.get("/channel/" + channelId, ChannelResponse.class, Map.of());
     }
-//    TODO uncomment when implemented
-//    public Long createChannel(Long teacherId, String title) {
-//        return this.post("/channel", Long.class, Map.of("teacherId", teacherId, "title", title), null);
-//    }
+
     public AllNotificationsResponse getChannelNotifications(Long channel, NotificationStatus status) {
         return this.post(String.format("/channel/%s/notifications", channel),
                 AllNotificationsResponse.class, Map.of("status", status), null);
