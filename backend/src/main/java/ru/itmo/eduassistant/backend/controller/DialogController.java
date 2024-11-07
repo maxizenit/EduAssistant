@@ -39,7 +39,10 @@ public class DialogController {
     }
 
     @GetMapping("/{id}")
-    public QuestionResponse getDialog(@PathVariable Long id) {
-        return dialogMapper.toQuestionResponse(dialogService.getDialog(id));
+    public AllMessagesResponse getDialog(@PathVariable Long id) {
+        return new AllMessagesResponse(dialogService.getAllMessagesInDialog(id)
+                .stream()
+                .map(messageMapper::toMessageResponse)
+                .toList());
     }
 }

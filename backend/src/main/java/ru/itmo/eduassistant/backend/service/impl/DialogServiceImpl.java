@@ -84,4 +84,8 @@ public class DialogServiceImpl {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Dialog with id %s not found".formatted(id)));
     }
+
+    public List<Message> getAllMessagesInDialog(Long id) {
+        return getDialog(id).getMessages();
+    }
 }
