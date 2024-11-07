@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.eduassistant.backend.entity.Channel;
 import ru.itmo.eduassistant.backend.entity.Notification;
+import ru.itmo.eduassistant.backend.entity.User;
+import ru.itmo.eduassistant.backend.mapper.NotificationMapper;
 import ru.itmo.eduassistant.backend.model.NotificationType;
 import ru.itmo.eduassistant.backend.model.UserRole;
 import ru.itmo.eduassistant.backend.repository.ChannelRepository;
 import ru.itmo.eduassistant.backend.repository.NotificationRepository;
 import ru.itmo.eduassistant.backend.repository.UserRepository;
+import ru.itmo.eduassistant.commons.client.telegram.TelegramMessageClient;
 import ru.itmo.eduassistant.commons.dto.notification.CreateNotificationRequest;
+import ru.itmo.eduassistant.commons.dto.telegram.SendNotificationRequest;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 import java.time.LocalDateTime;
@@ -23,10 +27,16 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
+    private final TelegramMessageClient telegramMessageClient;
+    private final NotificationMapper mapper;
 
     public Notification createNotification(CreateNotificationRequest request) {
-        Notification notification = build(request);
-        return notificationRepository.save(notification);
+        Notification notification = notificationRepository.save(build(request));
+
+        List<Long> telegramIds = notification.getChannel().getUsers().stream().map(User::getId).toList();
+        telegramMessageClient.postNotifications(new SendNotificationRequest(telegramIds, mapper.toResponse(notification)));
+
+        return notification;
     }
 
     private Notification build(CreateNotificationRequest request) {
