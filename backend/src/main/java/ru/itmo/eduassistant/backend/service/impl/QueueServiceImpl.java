@@ -2,6 +2,7 @@ package ru.itmo.eduassistant.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.itmo.eduassistant.backend.entity.Channel;
 import ru.itmo.eduassistant.backend.entity.Queue;
 import ru.itmo.eduassistant.backend.entity.User;
 import ru.itmo.eduassistant.backend.model.NotificationType;
@@ -9,6 +10,9 @@ import ru.itmo.eduassistant.backend.repository.QueueRepository;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.QueueService;
 import ru.itmo.eduassistant.backend.service.UserService;
+import ru.itmo.eduassistant.commons.client.telegram.TelegramMessageClient;
+import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
+import ru.itmo.eduassistant.commons.dto.telegram.SendNotificationRequest;
 import ru.itmo.eduassistant.commons.dto.user.NextUserResponse;
 import ru.itmo.eduassistant.commons.exception.ConflictException;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
@@ -23,14 +27,32 @@ public class QueueServiceImpl implements QueueService {
     private final ChannelService channelService;
     private final QueueRepository queueRepository;
     private final UserService userService;
+    private final TelegramMessageClient telegramMessageClient;
 
     @Override
     public long createQueue(long channelId, String name, LocalDateTime expirationDate) {
         Queue queue = new Queue();
         queue.setName(name);
-        queue.setChannel(channelService.getChannel(channelId));
+        Channel channel = channelService.getChannel(channelId);
+        queue.setChannel(channel);
         queue.setExpirationDate(expirationDate);
+
+        sendCreateNotifications(name, expirationDate, channel, queue);
+
         return queueRepository.save(queue).getId();
+    }
+
+    private void sendCreateNotifications(String name, LocalDateTime expirationDate, Channel channel, Queue queue) {
+        telegramMessageClient.postNotifications(new SendNotificationRequest(
+                channel.getUsers().stream().map(User::getTelegramId).toList(),
+                new NotificationResponse(
+                        queue.getId(),
+                        NotificationType.QUEUE_OPENED.apply(queue.getName(), expirationDate.toString()),
+                        name,
+                        channel.getTeacher().getFio(),
+                        LocalDateTime.now()
+                )
+        ));
     }
 
     @Override
@@ -89,7 +111,40 @@ public class QueueServiceImpl implements QueueService {
         List<User> users = queue.getTailOfQueue();
 
         queueRepository.save(queue);
-        return buildResponse(user, users, queue);
+        NextUserResponse nextUserResponse = buildResponse(user, users, queue);
+
+        sendNotificationsIfNeeded(queueId, nextUserResponse, queue);
+
+        return nextUserResponse;
+    }
+
+    private void sendNotificationsIfNeeded(long queueId, NextUserResponse nextUserResponse, Queue queue) {
+        if (nextUserResponse.getCurrent() != null) {
+            telegramMessageClient.postNotifications(new SendNotificationRequest(
+                    List.of(nextUserResponse.getCurrent().telegramId()),
+                    new NotificationResponse(
+                            queueId,
+                            nextUserResponse.getMessageForCurrent(),
+                            null,
+                            queue.getChannel().getTeacher().getFio(),
+                            LocalDateTime.now()
+                    )
+
+            ));
+        }
+        if (nextUserResponse.getNext() != null) {
+            telegramMessageClient.postNotifications(new SendNotificationRequest(
+                    List.of(nextUserResponse.getNext().telegramId()),
+                    new NotificationResponse(
+                            queueId,
+                            nextUserResponse.getMessageForNext(),
+                            null,
+                            queue.getChannel().getTeacher().getFio(),
+                            LocalDateTime.now()
+                    )
+
+            ));
+        }
     }
 
     private NextUserResponse buildResponse(User current, List<User> users, Queue queue) {

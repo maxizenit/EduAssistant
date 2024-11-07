@@ -6,13 +6,17 @@ import ru.itmo.eduassistant.backend.entity.Channel;
 import ru.itmo.eduassistant.backend.entity.Dialog;
 import ru.itmo.eduassistant.backend.entity.Message;
 import ru.itmo.eduassistant.backend.entity.User;
+import ru.itmo.eduassistant.backend.model.NotificationType;
 import ru.itmo.eduassistant.backend.model.UserRole;
 import ru.itmo.eduassistant.backend.repository.DialogRepository;
 import ru.itmo.eduassistant.backend.repository.MessageRepository;
 import ru.itmo.eduassistant.backend.service.ChannelService;
 import ru.itmo.eduassistant.backend.service.UserService;
+import ru.itmo.eduassistant.commons.client.telegram.TelegramMessageClient;
 import ru.itmo.eduassistant.commons.dto.dialog.NewMessageRequest;
 import ru.itmo.eduassistant.commons.dto.dialog.NewQuestionRequest;
+import ru.itmo.eduassistant.commons.dto.notification.NotificationResponse;
+import ru.itmo.eduassistant.commons.dto.telegram.SendNotificationRequest;
 import ru.itmo.eduassistant.commons.exception.EntityNotFoundException;
 
 import java.time.LocalDateTime;
@@ -26,12 +30,25 @@ public class DialogServiceImpl {
     private final MessageRepository messageRepository;
     private final ChannelService channelService;
     private final UserService userService;
+    private final TelegramMessageClient telegramMessageClient;
 
     public Message addMessage(NewMessageRequest newMessageRequest) {
         Dialog dialog = getDialog(newMessageRequest.dialogId());
         Message newMessage = buildMessage(newMessageRequest, dialog);
 
         dialog.getMessages().add(newMessage);
+
+        telegramMessageClient.postNotifications(new SendNotificationRequest(
+                List.of(newMessage.getRecipient().getTelegramId()),
+                new NotificationResponse(
+                        dialog.getId(),
+                        NotificationType.NEW_MESSAGE.apply(dialog.getChannel().getName(), newMessage.getAuthor().getFio()),
+                        dialog.getChannel().getName(),
+                        dialog.getAuthor().getFio(),
+                        newMessage.getDatetime()
+                )
+        ));
+
         return newMessage;
     }
 
@@ -55,6 +72,18 @@ public class DialogServiceImpl {
 
         dialogRepository.save(dialog);
         message.setDialog(dialog);
+
+        telegramMessageClient.postNotifications(new SendNotificationRequest(
+                List.of(message.getRecipient().getTelegramId()),
+                new NotificationResponse(
+                        dialog.getId(),
+                        NotificationType.NEW_QUESTION.apply(dialog.getChannel().getName(), message.getAuthor().getFio()),
+                        dialog.getChannel().getName(),
+                        dialog.getAuthor().getFio(),
+                        message.getDatetime()
+                )
+        ));
+
         return messageRepository.save(message);
     }
 
