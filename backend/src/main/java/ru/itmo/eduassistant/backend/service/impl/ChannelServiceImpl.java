@@ -52,11 +52,11 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void createChannel(CreateChannelRequest createChannelRequest) {
+    public Channel createChannel(CreateChannelRequest createChannelRequest) {
         Channel channel = new Channel();
         channel.setTeacher(userService.getUserByTelegramId(createChannelRequest.teacherId()));
         channel.setName(createChannelRequest.name());
-        channelRepository.save(channel);
+        return channelRepository.save(channel);
     }
 
     @Override

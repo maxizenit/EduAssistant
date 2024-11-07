@@ -21,8 +21,8 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @PostMapping
-    public void createChannel(@RequestBody CreateChannelRequest createChannelRequest) {
-        channelService.createChannel(createChannelRequest);
+    public ChannelResponse createChannel(@RequestBody CreateChannelRequest createChannelRequest) {
+        return channelMapper.toResponse(channelService.createChannel(createChannelRequest));
     }
 
     @PostMapping("/{channelId}/user/{telegramUserId}")

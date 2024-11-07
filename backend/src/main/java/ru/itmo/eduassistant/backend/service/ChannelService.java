@@ -16,7 +16,7 @@ public interface ChannelService {
 
     AllNotificationsResponse getAllNotifications(long id, NotificationStatus status);
 
-    void createChannel(CreateChannelRequest createChannelRequest);
+    Channel createChannel(CreateChannelRequest createChannelRequest);
 
     void addUserToChannel(long channelId, long telegramUserId);
 
