@@ -31,11 +31,12 @@ class StudentInQuestionViewState(
         val questionId = dataCache.getInputDataValue(chatId, currentQuestionIdDataType) as Long?
             ?: return stateSwitcher.switchToLongTimeInactiveState(chatId)
         val messages =
-            eduAssistantClient.getDialog(questionId).messages.joinToString(separator = "\n") { it.authorName + ": \"" + it.text + "\"" }
+            eduAssistantClient.getDialog(questionId).messages.joinToString(separator = "\n") { "_" + it.authorName + ":_ \"" + it.text + "\"" }
         val sendMessage = SendMessage(
-            chatId.toString(), "Сообщения в цепочке:\n${messages}\n\n" +
-                    "Для ответа пришлите сообщение"
+            chatId.toString(), "*Сообщения в цепочке:*\n${messages}\n\n" +
+                    "\uD83D\uDCE9 Для ответа пришлите сообщение"
         )
+        sendMessage.enableMarkdown(true)
         sendMessage.replyMarkup = keyboard
         return sendMessage
     }
