@@ -53,7 +53,7 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public List<Queue> getAllTeacherQueues(long teacherId) {
         return queueRepository.findAll().stream()
-                .filter(queue -> queue.getChannel().getTeacher().getId() == teacherId)
+                .filter(queue -> queue.getChannel().getTeacher().getTelegramId() == teacherId)
                 .collect(Collectors.toList());
     }
 
