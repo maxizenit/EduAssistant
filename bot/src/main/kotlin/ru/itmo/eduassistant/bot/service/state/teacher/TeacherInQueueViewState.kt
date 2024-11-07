@@ -41,7 +41,7 @@ class TeacherInQueueViewState(
         var counter = 0
         val message = "\uD83D\uDCAC *Канал:* ${queue.channelName}\n" +
                 "*Название очереди:* ${queue.name}\n\n" +
-                "_Список участников:\n" +
+                "_Список участников_:\n" +
                 studentsInQueue.joinToString(separator = "\n") { (++counter).toString() + ". " + it }
         val sendMessage = SendMessage(chatId.toString(), message)
         sendMessage.enableMarkdown(true)
