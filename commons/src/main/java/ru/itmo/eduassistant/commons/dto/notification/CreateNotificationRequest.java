@@ -1,7 +1,7 @@
 package ru.itmo.eduassistant.commons.dto.notification;
 
 public record CreateNotificationRequest(
-        String type,
+        NotificationType type,
         long channelId,
         String text
 ) {
